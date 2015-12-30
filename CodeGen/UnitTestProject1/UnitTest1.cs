@@ -56,7 +56,6 @@ namespace UnitTestProject1
 			const string firstFieldValue = "Value";
 
 			builder.AddFieldValue( firstFieldName, firstFieldValue ).GetDeclaration();
-
 		}
 
 		[TestMethod]
@@ -103,7 +102,7 @@ namespace UnitTestProject1
             var builder = new ClassBuilder(ClassName);
 	        const string functionName = "VoidMethod";
 
-	        var target = builder.AddVoidMethode(functionName).GetDeclaration();
+	        var target = builder.AddVoidMethod(functionName).GetDeclaration();
 
             Assert.AreEqual(1,target.Members.Count);
             Assert.AreEqual(functionName, target.Members[0].Name);
@@ -113,11 +112,33 @@ namespace UnitTestProject1
         [ExpectedException(typeof(MethodAlreadyExistsException))]
         public void IfAddVoidMethodIsCalledTwiceWithTheSameNameAnExceptionShouldBeenThrown()
         {
-
             var builder = new ClassBuilder(ClassName);
             const string functionName = "FirstFunction";
-
-            builder.AddVoidMethode(functionName).AddVoidMethode(functionName).GetDeclaration();
+					
+            builder.AddVoidMethod(functionName).AddVoidMethod(functionName).GetDeclaration();
         }
-    }
+
+		[TestMethod]
+		public void IfAddPropertyIsCalledShouldAddPropertyToDeclaration()
+		{
+			var builder = new ClassBuilder(ClassName);
+			const string firstPropertyName = "FirstProperty";
+
+			var target = builder.AddProperty<string>(firstPropertyName).GetDeclaration();
+
+			Assert.AreEqual(1, target.Members.Count);
+			var member = target.Members[0];
+			Assert.AreEqual(firstPropertyName, member.Name);
+		}
+
+		[TestMethod]
+		[ExpectedException(typeof(PropertyAlreadyExistsException))]
+		public void IfAddPropertyIsCalledTwiceWithTheSamePropertyNameShouldThrowException()
+		{
+			var builder = new ClassBuilder(ClassName);
+			const string firstPropertyName = "FirstProperty";
+
+			builder.AddProperty<string>(firstPropertyName).AddProperty<string>(firstPropertyName).GetDeclaration();
+		}
+	}
 }

@@ -7,14 +7,23 @@ namespace CodeGen
 
 	}
 
-    public class MethodAlreadyExistsException : Exception
-    {
-        
-    }
+	public class MethodAlreadyExistsException : Exception
+	{
 
-    public class FieldAlreadyExistsException : Exception
-    {
-        
-    }
+	}
 
+	public class FieldAlreadyExistsException : Exception
+	{
+
+	}
+
+	public class PropertyNotFoundException : Exception
+	{
+
+	}
+
+	public class PropertyAlreadyExistsException : Exception
+	{
+
+	}
 }

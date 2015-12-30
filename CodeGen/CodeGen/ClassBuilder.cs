@@ -1,4 +1,5 @@
-﻿using System.CodeDom;
+﻿using System;
+using System.CodeDom;
 using System.Linq;
 
 namespace CodeGen
@@ -130,7 +131,7 @@ namespace CodeGen
         /// <param name="name"></param>
         /// <param name="attr"></param>
         /// <returns></returns>
-        public ClassBuilder AddVoidMethode(string name, MemberAttributes attr = MemberAttributes.Public)
+        public ClassBuilder AddVoidMethod(string name, MemberAttributes attr = MemberAttributes.Public)
         {
             if (FindMember<CodeMemberMethod>(name) != null) throw new MethodAlreadyExistsException();
 
@@ -139,5 +140,53 @@ namespace CodeGen
             _currentClass.Members.Add(method);
             return this;
         }
+
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="sPropertyName"></param>
+		/// <param name="attr"></param>
+		/// <returns></returns>
+		public ClassBuilder AddProperty<T>(string sPropertyName, MemberAttributes attr = MemberAttributes.Private)
+		{
+            if (FindMember<CodeMemberProperty>(sPropertyName) != null)
+				throw new PropertyAlreadyExistsException();
+			CreateCodeMemberProperty<T>(sPropertyName, attr);
+			return this;
+		}
+		
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <typeparam name="T"></typeparam>
+		/// <param name="sPropertyName"></param>
+		/// <param name="attr"></param>
+		/// <returns></returns>
+		private void CreateCodeMemberProperty<T>(string sPropertyName, MemberAttributes attr)
+		{
+			var Property = new CodeMemberProperty
+			{
+				Attributes = attr,
+				Name = sPropertyName,
+				Type = new CodeTypeReference(typeof(T))
+			};
+			_currentClass.Members.Add(Property);
+		}
+		
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <returns></returns>
+		public ClassBuilder AddPropertyValue<T>(string sPropertyName, T oPropertyValue)
+		{
+			/*var member = FindMember<CodeMemberProperty>(sPropertyName);
+
+			if (member == null)
+				throw new PropertyNotFoundException();
+
+			member.InitExpression = new CodePrimitiveExpression(oPropertyValue);*/
+
+			return this;
+		}
 	}
 }
