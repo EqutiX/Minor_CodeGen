@@ -6,4 +6,9 @@ namespace CodeGen
 	{
 
 	}
+
+    public class MethodAlreadyExistsException : Exception
+    {
+        
+    }
 }

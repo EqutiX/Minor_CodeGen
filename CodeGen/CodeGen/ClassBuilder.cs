@@ -87,47 +87,28 @@ namespace CodeGen
 			return this;
 		}
 
-		/// <summary>
-		/// 
-		/// </summary>
-		/// <returns></returns>
-		public BetaClassBuilder AddFunction()
-		{
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="name"></param>
+        /// <param name="attr"></param>
+        /// <returns></returns>
+		public BetaClassBuilder AddMethod<T>(string name, MemberAttributes attr = MemberAttributes.Public)
+        {
+            if (FindMember<CodeMemberMethod>(name) != null) throw new MethodAlreadyExistsException();
 			// Declaring a ToString method
-			CodeMemberMethod toStringMethod = new CodeMemberMethod();
-			toStringMethod.Attributes =
-				MemberAttributes.Public | MemberAttributes.Override;
-			toStringMethod.Name = "ToString";
-			toStringMethod.ReturnType =
-				new CodeTypeReference( typeof( System.String ) );
+		    var method = new CodeMemberMethod
+		    {
+		        Attributes = attr,
+		        Name = name,
+		        ReturnType = new CodeTypeReference(typeof (T))
+		    };
 
-			CodeFieldReferenceExpression widthReference =
-				new CodeFieldReferenceExpression(
-				new CodeThisReferenceExpression(), "Width" );
-			CodeFieldReferenceExpression heightReference =
-				new CodeFieldReferenceExpression(
-				new CodeThisReferenceExpression(), "Height" );
-			CodeFieldReferenceExpression areaReference =
-				new CodeFieldReferenceExpression(
-				new CodeThisReferenceExpression(), "Area" );
+            var returnStatement = new CodeMethodReturnStatement();
+            method.Statements.Add( returnStatement );
 
-			// Declaring a return statement for method ToString.
-			CodeMethodReturnStatement returnStatement =
-				new CodeMethodReturnStatement();
-
-			// This statement returns a string representation of the width,
-			// height, and area.
-			string formattedOutput = "The object:" + Environment.NewLine +
-				" width = {0}," + Environment.NewLine +
-				" height = {1}," + Environment.NewLine +
-				" area = {2}";
-			returnStatement.Expression =
-				new CodeMethodInvokeExpression(
-				new CodeTypeReferenceExpression( "System.String" ), "Format",
-				new CodePrimitiveExpression( formattedOutput ),
-				widthReference, heightReference, areaReference );
-			toStringMethod.Statements.Add( returnStatement );
-			_currentClass.Members.Add( toStringMethod );
+            _currentClass.Members.Add( method );
 			return this;
 		}
 	}

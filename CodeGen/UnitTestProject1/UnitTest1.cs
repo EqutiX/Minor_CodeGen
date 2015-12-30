@@ -1,7 +1,6 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using CodeGen;
-using System.Linq;
 
 namespace UnitTestProject1
 {
@@ -11,7 +10,7 @@ namespace UnitTestProject1
 		[TestMethod]
 		public void IfNewIntanceOfBetaBuilderGetDeclarationShouldReturnClassWithGivenName()
 		{
-			var className = "FirstClass";
+			const string className = "FirstClass";
 			var builder = new BetaClassBuilder( className );
 
 			var target = builder.GetDeclaration();
@@ -22,49 +21,65 @@ namespace UnitTestProject1
 		[TestMethod]
 		public void IfAddFieldIsCalledShouldAddFieldToDeclaration()
 		{
-			var className = "FirstClass";
+			const string className = "FirstClass";
 			var builder = new BetaClassBuilder( className );
-			var FirstFieldName = "FirstField";
+			const string firstFieldName = "FirstField";
 
-			var target = builder.AddField<String>( FirstFieldName ).GetDeclaration();
+			var target = builder.AddField<string>( firstFieldName ).GetDeclaration();
 
 			Assert.AreEqual( 1, target.Members.Count );
 			var member = target.Members[0];
-			Assert.AreEqual( FirstFieldName, member.Name );
+			Assert.AreEqual( firstFieldName, member.Name );
 		}
 
 		[TestMethod]
 		[ExpectedException(typeof(FieldNotFoundException))]
 		public void IfAddFieldValueToNonExistingFieldShouldThrowException()
 		{
-			var className = "FirstClass";
+			const string className = "FirstClass";
 			var builder = new BetaClassBuilder( className );
-			var FirstFieldName = "FirstField";
-			var FirstFieldValue = "Value";
+			const string firstFieldName = "FirstField";
+			const string firstFieldValue = "Value";
 
-			var target = builder.AddFieldValue<String>( FirstFieldName, FirstFieldValue ).GetDeclaration();
+			builder.AddFieldValue( firstFieldName, firstFieldValue ).GetDeclaration();
 
 		}
 
 		[TestMethod]
 		public void IfAddFieldValueToExistingFieldShouldNotThrowException()
 		{
-			var className = "FirstClass";
+			const string className = "FirstClass";
 			var builder = new BetaClassBuilder( className );
-			var FirstFieldName = "FirstField";
-			var FirstFieldValue = "Value";
+			const string firstFieldName = "FirstField";
+			const string firstFieldValue = "Value";
 
-			var target = builder.AddField<String>( FirstFieldName ).AddFieldValue<String>( FirstFieldName, FirstFieldValue ).GetDeclaration();
+			var target = builder.AddField<string>( firstFieldName ).AddFieldValue( firstFieldName, firstFieldValue ).GetDeclaration();
 			Assert.IsNotNull( target );
 		}
 
 		[TestMethod]
-		public void IfAddFunctionShouldAddNewFunction()
+		public void IfAddMethodIsCalledShouldAddNewFunctionWithGivenName()
 		{
-			var className = "FirstClass";
+			const string className = "FirstClass";
 			var builder = new BetaClassBuilder( className );
-			var functionName = "FirstFunction";
-			var target = builder.AddFunction();
-		}
+			const string functionName = "FirstFunction";
+
+			var target = builder.AddMethod<string>(functionName).GetDeclaration();
+
+            Assert.AreEqual(1, target.Members.Count);
+            var member = target.Members[0];
+            Assert.AreEqual(functionName, member.Name);
+        }
+
+	    [TestMethod]
+	    [ExpectedException(typeof(MethodAlreadyExistsException))]
+	    public void IfAddMethodIsCalledTwiceWithTheSameNameAnExceptionShouldBeenThrown()
+	    {
+            const string className = "FirstClass";
+            var builder = new BetaClassBuilder(className);
+            const string functionName = "FirstFunction";
+
+            builder.AddMethod<string>(functionName).AddMethod<string>(functionName).GetDeclaration();
+        }
 	}
 }
