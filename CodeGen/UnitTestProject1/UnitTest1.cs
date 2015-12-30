@@ -13,7 +13,7 @@ namespace UnitTestProject1
 		public void IfNewIntanceOfBetaBuilderGetDeclarationShouldReturnClassWithGivenName()
 		{
 			
-			var builder = new BetaClassBuilder( ClassName );
+			var builder = new ClassBuilder( ClassName );
 
 			var target = builder.GetDeclaration();
 
@@ -24,7 +24,7 @@ namespace UnitTestProject1
 		public void IfAddFieldIsCalledShouldAddFieldToDeclaration()
 		{
 			
-			var builder = new BetaClassBuilder( ClassName );
+			var builder = new ClassBuilder( ClassName );
 			const string firstFieldName = "FirstField";
 
 			var target = builder.AddField<string>( firstFieldName ).GetDeclaration();
@@ -39,7 +39,7 @@ namespace UnitTestProject1
         public void IfAddFieldIsCalledTwiceWithTheSameFieldNameShouldThrowException()
         {
 
-            var builder = new BetaClassBuilder(ClassName);
+            var builder = new ClassBuilder(ClassName);
             const string firstFieldName = "FirstField";
 
             builder.AddField<string>(firstFieldName).AddField<string>(firstFieldName).GetDeclaration();
@@ -51,7 +51,7 @@ namespace UnitTestProject1
 		public void IfAddFieldValueToNonExistingFieldShouldThrowException()
 		{
 
-			var builder = new BetaClassBuilder( ClassName );
+			var builder = new ClassBuilder( ClassName );
 			const string firstFieldName = "FirstField";
 			const string firstFieldValue = "Value";
 
@@ -63,7 +63,7 @@ namespace UnitTestProject1
 		public void IfAddFieldValueToExistingFieldShouldNotThrowException()
 		{
 
-			var builder = new BetaClassBuilder( ClassName );
+			var builder = new ClassBuilder( ClassName );
 			const string firstFieldName = "FirstField";
 			const string firstFieldValue = "Value";
 
@@ -75,7 +75,7 @@ namespace UnitTestProject1
 		public void IfAddMethodIsCalledShouldAddNewFunctionWithGivenName()
 		{
 
-			var builder = new BetaClassBuilder( ClassName );
+			var builder = new ClassBuilder( ClassName );
 			const string functionName = "FirstFunction";
 
 			var target = builder.AddMethod<string>(functionName).GetDeclaration();
@@ -90,7 +90,7 @@ namespace UnitTestProject1
 	    public void IfAddMethodIsCalledTwiceWithTheSameNameAnExceptionShouldBeenThrown()
 	    {
 
-            var builder = new BetaClassBuilder(ClassName);
+            var builder = new ClassBuilder(ClassName);
             const string functionName = "FirstFunction";
 
             builder.AddMethod<string>(functionName).AddMethod<string>(functionName).GetDeclaration();
@@ -100,7 +100,7 @@ namespace UnitTestProject1
 	    public void IfAddVoidMethodIsCalledANewMethodShouldBeAddedToTheDeclarationMembers()
 	    {
 
-            var builder = new BetaClassBuilder(ClassName);
+            var builder = new ClassBuilder(ClassName);
 	        const string functionName = "VoidMethod";
 
 	        var target = builder.AddVoidMethode(functionName).GetDeclaration();
@@ -114,7 +114,7 @@ namespace UnitTestProject1
         public void IfAddVoidMethodIsCalledTwiceWithTheSameNameAnExceptionShouldBeenThrown()
         {
 
-            var builder = new BetaClassBuilder(ClassName);
+            var builder = new ClassBuilder(ClassName);
             const string functionName = "FirstFunction";
 
             builder.AddVoidMethode(functionName).AddVoidMethode(functionName).GetDeclaration();

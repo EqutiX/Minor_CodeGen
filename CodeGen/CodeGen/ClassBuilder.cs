@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace CodeGen
 {
-    public class BetaClassBuilder
+    public class ClassBuilder
 	{
 		/// <summary>
 		/// 
@@ -14,7 +14,7 @@ namespace CodeGen
 		/// 
 		/// </summary>
 		/// <param name="className"></param>
-		public BetaClassBuilder(string className)
+		public ClassBuilder(string className)
 		{
 			_currentClass = new CodeTypeDeclaration( className );
 		}
@@ -35,7 +35,7 @@ namespace CodeGen
         /// <param name="sFieldName"></param>
         /// <param name="attr"></param>
         /// <returns></returns>
-        public BetaClassBuilder AddField<T>( string sFieldName , MemberAttributes attr = MemberAttributes.Public)
+        public ClassBuilder AddField<T>( string sFieldName , MemberAttributes attr = MemberAttributes.Public)
         {
            if( FindMember<CodeMemberField>(sFieldName) != null)
                 throw new FieldAlreadyExistsException();
@@ -75,7 +75,7 @@ namespace CodeGen
 		/// 
 		/// </summary>
 		/// <returns></returns>
-		public BetaClassBuilder AddFieldValue<T>( string sFieldName, T oFieldValue )
+		public ClassBuilder AddFieldValue<T>( string sFieldName, T oFieldValue )
 		{
 			var member = FindMember<CodeMemberField>( sFieldName );
 
@@ -94,7 +94,7 @@ namespace CodeGen
         /// <param name="name"></param>
         /// <param name="attr"></param>
         /// <returns></returns>
-		public BetaClassBuilder AddMethod<T>(string name, MemberAttributes attr = MemberAttributes.Public)
+		public ClassBuilder AddMethod<T>(string name, MemberAttributes attr = MemberAttributes.Public)
         {
             if (FindMember<CodeMemberMethod>(name) != null) throw new MethodAlreadyExistsException();
 			
@@ -118,7 +118,7 @@ namespace CodeGen
         /// <param name="name"></param>
         /// <param name="attr"></param>
         /// <returns></returns>
-        public BetaClassBuilder AddVoidMethode(string name, MemberAttributes attr = MemberAttributes.Public)
+        public ClassBuilder AddVoidMethode(string name, MemberAttributes attr = MemberAttributes.Public)
         {
             if (FindMember<CodeMemberMethod>(name) != null) throw new MethodAlreadyExistsException();
 
