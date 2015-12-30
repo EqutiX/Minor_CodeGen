@@ -1,6 +1,6 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using MyTools;
+using CodeGen;
 using System.Linq;
 
 namespace UnitTestProject1
