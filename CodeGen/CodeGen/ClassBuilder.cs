@@ -111,5 +111,26 @@ namespace CodeGen
             _currentClass.Members.Add( method );
 			return this;
 		}
+        
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="attr"></param>
+        /// <returns></returns>
+        public BetaClassBuilder AddVoidMethode(string name, MemberAttributes attr = MemberAttributes.Public)
+        {
+            if (FindMember<CodeMemberMethod>(name) != null) throw new MethodAlreadyExistsException();
+
+            var method = new CodeMemberMethod
+            {
+                Attributes = attr,
+                Name = name,
+                ReturnType = new CodeTypeReference(typeof(void))
+            };
+
+            _currentClass.Members.Add(method);
+            return this;
+        }
 	}
 }

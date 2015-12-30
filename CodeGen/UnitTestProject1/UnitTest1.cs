@@ -7,22 +7,24 @@ namespace UnitTestProject1
 	[TestClass]
 	public class UnitTest1
 	{
-		[TestMethod]
+        const string ClassName = "FirstClass";
+
+        [TestMethod]
 		public void IfNewIntanceOfBetaBuilderGetDeclarationShouldReturnClassWithGivenName()
 		{
-			const string className = "FirstClass";
-			var builder = new BetaClassBuilder( className );
+			
+			var builder = new BetaClassBuilder( ClassName );
 
 			var target = builder.GetDeclaration();
 
-			Assert.AreEqual( target.Name, className );
+			Assert.AreEqual( target.Name, ClassName );
 		}
 
 		[TestMethod]
 		public void IfAddFieldIsCalledShouldAddFieldToDeclaration()
 		{
-			const string className = "FirstClass";
-			var builder = new BetaClassBuilder( className );
+			
+			var builder = new BetaClassBuilder( ClassName );
 			const string firstFieldName = "FirstField";
 
 			var target = builder.AddField<string>( firstFieldName ).GetDeclaration();
@@ -36,8 +38,8 @@ namespace UnitTestProject1
         [ExpectedException(typeof(FieldAlreadyExistsException))]
         public void IfAddFieldIsCalledTwiceWithTheSameFieldNameShouldThrowException()
         {
-            const string className = "FirstClass";
-            var builder = new BetaClassBuilder(className);
+
+            var builder = new BetaClassBuilder(ClassName);
             const string firstFieldName = "FirstField";
 
             builder.AddField<string>(firstFieldName).AddField<string>(firstFieldName).GetDeclaration();
@@ -48,8 +50,8 @@ namespace UnitTestProject1
 		[ExpectedException(typeof(FieldNotFoundException))]
 		public void IfAddFieldValueToNonExistingFieldShouldThrowException()
 		{
-			const string className = "FirstClass";
-			var builder = new BetaClassBuilder( className );
+
+			var builder = new BetaClassBuilder( ClassName );
 			const string firstFieldName = "FirstField";
 			const string firstFieldValue = "Value";
 
@@ -60,8 +62,8 @@ namespace UnitTestProject1
 		[TestMethod]
 		public void IfAddFieldValueToExistingFieldShouldNotThrowException()
 		{
-			const string className = "FirstClass";
-			var builder = new BetaClassBuilder( className );
+
+			var builder = new BetaClassBuilder( ClassName );
 			const string firstFieldName = "FirstField";
 			const string firstFieldValue = "Value";
 
@@ -72,8 +74,8 @@ namespace UnitTestProject1
 		[TestMethod]
 		public void IfAddMethodIsCalledShouldAddNewFunctionWithGivenName()
 		{
-			const string className = "FirstClass";
-			var builder = new BetaClassBuilder( className );
+
+			var builder = new BetaClassBuilder( ClassName );
 			const string functionName = "FirstFunction";
 
 			var target = builder.AddMethod<string>(functionName).GetDeclaration();
@@ -87,11 +89,35 @@ namespace UnitTestProject1
 	    [ExpectedException(typeof(MethodAlreadyExistsException))]
 	    public void IfAddMethodIsCalledTwiceWithTheSameNameAnExceptionShouldBeenThrown()
 	    {
-            const string className = "FirstClass";
-            var builder = new BetaClassBuilder(className);
+
+            var builder = new BetaClassBuilder(ClassName);
             const string functionName = "FirstFunction";
 
             builder.AddMethod<string>(functionName).AddMethod<string>(functionName).GetDeclaration();
         }
-	}
+
+	    [TestMethod]
+	    public void IfAddVoidMethodIsCalledANewMethodShouldBeAddedToTheDeclarationMembers()
+	    {
+
+            var builder = new BetaClassBuilder(ClassName);
+	        const string functionName = "VoidMethod";
+
+	        var target = builder.AddVoidMethode(functionName).GetDeclaration();
+
+            Assert.AreEqual(1,target.Members.Count);
+            Assert.AreEqual(functionName, target.Members[0].Name);
+	    }
+
+        [TestMethod]
+        [ExpectedException(typeof(MethodAlreadyExistsException))]
+        public void IfAddVoidMethodIsCalledTwiceWithTheSameNameAnExceptionShouldBeenThrown()
+        {
+
+            var builder = new BetaClassBuilder(ClassName);
+            const string functionName = "FirstFunction";
+
+            builder.AddVoidMethode(functionName).AddVoidMethode(functionName).GetDeclaration();
+        }
+    }
 }
