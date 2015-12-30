@@ -98,12 +98,7 @@ namespace CodeGen
         {
             if (FindMember<CodeMemberMethod>(name) != null) throw new MethodAlreadyExistsException();
 			
-		    var method = new CodeMemberMethod
-		    {
-		        Attributes = attr,
-		        Name = name,
-		        ReturnType = new CodeTypeReference(typeof (T))
-		    };
+		    var method = CreateCodeMemberMethod(name, attr,new CodeTypeReference(typeof(T)));
 
             var returnStatement = new CodeMethodReturnStatement();
             method.Statements.Add( returnStatement );
@@ -111,7 +106,24 @@ namespace CodeGen
             _currentClass.Members.Add( method );
 			return this;
 		}
-        
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="attr"></param>
+        /// <param name="codeTypeReference"></param>
+        /// <returns></returns>
+        private static CodeMemberMethod CreateCodeMemberMethod(string name, MemberAttributes attr, CodeTypeReference codeTypeReference)
+        {
+            return new CodeMemberMethod
+            {
+                Attributes = attr,
+                Name = name,
+                ReturnType = codeTypeReference
+            };
+        }
+
         /// <summary>
         /// 
         /// </summary>
@@ -122,12 +134,7 @@ namespace CodeGen
         {
             if (FindMember<CodeMemberMethod>(name) != null) throw new MethodAlreadyExistsException();
 
-            var method = new CodeMemberMethod
-            {
-                Attributes = attr,
-                Name = name,
-                ReturnType = new CodeTypeReference(typeof(void))
-            };
+            var method = CreateCodeMemberMethod(name, attr, new CodeTypeReference(typeof (void)));
 
             _currentClass.Members.Add(method);
             return this;
