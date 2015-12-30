@@ -32,7 +32,19 @@ namespace UnitTestProject1
 			Assert.AreEqual( firstFieldName, member.Name );
 		}
 
-		[TestMethod]
+        [TestMethod]
+        [ExpectedException(typeof(FieldAlreadyExistsException))]
+        public void IfAddFieldIsCalledTwiceWithTheSameFieldNameShouldThrowException()
+        {
+            const string className = "FirstClass";
+            var builder = new BetaClassBuilder(className);
+            const string firstFieldName = "FirstField";
+
+            builder.AddField<string>(firstFieldName).AddField<string>(firstFieldName).GetDeclaration();
+
+        }
+
+        [TestMethod]
 		[ExpectedException(typeof(FieldNotFoundException))]
 		public void IfAddFieldValueToNonExistingFieldShouldThrowException()
 		{

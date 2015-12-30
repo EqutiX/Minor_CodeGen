@@ -1,5 +1,5 @@
-﻿using System;
-using System.CodeDom;
+﻿using System.CodeDom;
+using System.Linq;
 
 namespace CodeGen
 {
@@ -8,7 +8,7 @@ namespace CodeGen
 		/// <summary>
 		/// 
 		/// </summary>
-		private CodeTypeDeclaration _currentClass;
+		private readonly CodeTypeDeclaration _currentClass;
 		
 		/// <summary>
 		/// 
@@ -25,41 +25,41 @@ namespace CodeGen
 		/// <param name="sFieldName"></param>
 		private T FindMember<T> ( string sFieldName) where T : CodeTypeMember
 		{
-			foreach(T member in _currentClass.Members)
-			{
-				if(member.Name == sFieldName) return member;
-			}
-			return null;
+		    return _currentClass.Members.Cast<T>().FirstOrDefault(member => member.Name == sFieldName);
 		}
 
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sFieldName"></param>
+        /// <param name="attr"></param>
+        /// <returns></returns>
+        public BetaClassBuilder AddField<T>( string sFieldName , MemberAttributes attr = MemberAttributes.Public)
+        {
+           if( FindMember<CodeMemberField>(sFieldName) != null)
+                throw new FieldAlreadyExistsException();
+            CreateCodeMemberField<T>( sFieldName, attr);
+            return this;
+        }
 
-		/// <summary>
-		/// 
-		/// </summary>
-		/// <param name="sFieldName"></param>
-		/// <returns></returns>
-		public BetaClassBuilder AddField<T>( string sFieldName , MemberAttributes attr = MemberAttributes.Public) 
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="sFieldName"></param>
+        /// <param name="attr"></param>
+        /// <returns></returns>
+        private void CreateCodeMemberField<T>(string sFieldName, MemberAttributes attr)
 		{
-			var field = FindMember<CodeMemberField>(sFieldName) ?? CreateCodeMemberField<T>( sFieldName, attr);
-			return this;
-		}
-
-
-		/// <summary>
-		/// 
-		/// </summary>
-		/// <typeparam name="T"></typeparam>
-		/// <param name="sFieldName"></param>
-		/// <returns></returns>
-		private CodeMemberField CreateCodeMemberField<T>( string sFieldName, MemberAttributes attr)
-		{
-			CodeMemberField field = new CodeMemberField();
-			field.Attributes = attr;
-			field.Name = sFieldName;
-			field.Type = new CodeTypeReference( typeof( T ) );
-			_currentClass.Members.Add( field );
-			return field;
+            var field = new CodeMemberField
+            {
+                Attributes = attr,
+                Name = sFieldName,
+                Type = new CodeTypeReference(typeof (T))
+            };
+            _currentClass.Members.Add( field );
 		}
 
 		/// <summary>
@@ -97,7 +97,7 @@ namespace CodeGen
 		public BetaClassBuilder AddMethod<T>(string name, MemberAttributes attr = MemberAttributes.Public)
         {
             if (FindMember<CodeMemberMethod>(name) != null) throw new MethodAlreadyExistsException();
-			// Declaring a ToString method
+			
 		    var method = new CodeMemberMethod
 		    {
 		        Attributes = attr,

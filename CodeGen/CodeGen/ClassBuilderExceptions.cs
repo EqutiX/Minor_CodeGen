@@ -11,4 +11,10 @@ namespace CodeGen
     {
         
     }
+
+    public class FieldAlreadyExistsException : Exception
+    {
+        
+    }
+
 }
