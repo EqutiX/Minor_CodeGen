@@ -168,8 +168,12 @@ namespace CodeGen
 			{
 				Attributes = attr,
 				Name = sPropertyName,
-				Type = new CodeTypeReference(typeof(T))
+				Type = new CodeTypeReference(typeof(T)),
+				HasGet = true,
+				HasSet = true
 			};
+			Property.GetStatements.Add(new CodeMethodReturnStatement(new CodeFieldReferenceExpression(new CodeThisReferenceExpression(), sPropertyName+"Value")));
+			Property.SetStatements.Add(new CodeAssignStatement(new CodeFieldReferenceExpression(new CodeThisReferenceExpression(), sPropertyName + "Value"), new CodePropertySetValueReferenceExpression()));
 			_currentClass.Members.Add(Property);
 		}
 		
