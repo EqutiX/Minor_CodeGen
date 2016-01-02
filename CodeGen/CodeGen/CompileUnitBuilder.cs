@@ -1,5 +1,7 @@
 ﻿using System.CodeDom;
+using System.CodeDom.Compiler;
 using System.Diagnostics;
+using System.IO;
 
 namespace CodeGen
 {
@@ -57,6 +59,17 @@ namespace CodeGen
             if(string.IsNullOrWhiteSpace(usingName)) throw new UsingCanNotBeNullOrEmptyException();
             _codeNamespace.Imports.Add(new CodeNamespaceImport(usingName));
             return this;
+        }
+
+        public void PublishCode(string fileName)
+        {
+            var provider = CodeDomProvider.CreateProvider("CSharp");
+            var options = new CodeGeneratorOptions {BracingStyle = "C"};
+            using (var sourceWriter = new StreamWriter(fileName))
+            {
+                provider.GenerateCodeFromCompileUnit(
+                    _currentCodeCompileUnit, sourceWriter, options);
+            }
         }
     }
 }
