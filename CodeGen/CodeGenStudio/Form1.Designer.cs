@@ -1,6 +1,6 @@
 ﻿namespace CodeGenStudio
 {
-	partial class Form1
+	partial class CodeGenStudio
 	{
 		/// <summary>
 		/// Required designer variable.
@@ -28,229 +28,272 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
-			this.textBox1 = new System.Windows.Forms.TextBox();
-			this.label1 = new System.Windows.Forms.Label();
-			this.panel1 = new System.Windows.Forms.Panel();
-			this.listBox1 = new System.Windows.Forms.ListBox();
-			this.button1 = new System.Windows.Forms.Button();
-			this.ClassNameLb = new System.Windows.Forms.Label();
-			this.textBox2 = new System.Windows.Forms.TextBox();
-			this.listBox2 = new System.Windows.Forms.ListBox();
-			this.label2 = new System.Windows.Forms.Label();
-			this.label3 = new System.Windows.Forms.Label();
-			this.label4 = new System.Windows.Forms.Label();
-			this.textBox3 = new System.Windows.Forms.TextBox();
-			this.textBox4 = new System.Windows.Forms.TextBox();
-			this.textBox5 = new System.Windows.Forms.TextBox();
-			this.button2 = new System.Windows.Forms.Button();
-			this.button3 = new System.Windows.Forms.Button();
-			this.button4 = new System.Windows.Forms.Button();
-			this.button5 = new System.Windows.Forms.Button();
-			this.panel1.SuspendLayout();
-			this.SuspendLayout();
-			// 
-			// textBox1
-			// 
-			this.textBox1.Location = new System.Drawing.Point(204, 12);
-			this.textBox1.Name = "textBox1";
-			this.textBox1.Size = new System.Drawing.Size(782, 22);
-			this.textBox1.TabIndex = 0;
-			// 
-			// label1
-			// 
-			this.label1.AutoSize = true;
-			this.label1.Location = new System.Drawing.Point(13, 12);
-			this.label1.Name = "label1";
-			this.label1.Size = new System.Drawing.Size(83, 17);
-			this.label1.TabIndex = 1;
-			this.label1.Text = "Namespace";
-			// 
-			// panel1
-			// 
-			this.panel1.Controls.Add(this.button5);
-			this.panel1.Controls.Add(this.button4);
-			this.panel1.Controls.Add(this.button3);
-			this.panel1.Controls.Add(this.textBox5);
-			this.panel1.Controls.Add(this.textBox4);
-			this.panel1.Controls.Add(this.textBox3);
-			this.panel1.Controls.Add(this.label4);
-			this.panel1.Controls.Add(this.label3);
-			this.panel1.Controls.Add(this.label2);
-			this.panel1.Controls.Add(this.button2);
-			this.panel1.Controls.Add(this.listBox2);
-			this.panel1.Controls.Add(this.textBox2);
-			this.panel1.Controls.Add(this.ClassNameLb);
-			this.panel1.Location = new System.Drawing.Point(204, 55);
-			this.panel1.Name = "panel1";
-			this.panel1.Size = new System.Drawing.Size(782, 292);
-			this.panel1.TabIndex = 4;
-			// 
-			// listBox1
-			// 
-			this.listBox1.FormattingEnabled = true;
-			this.listBox1.ItemHeight = 16;
-			this.listBox1.Location = new System.Drawing.Point(13, 55);
-			this.listBox1.Name = "listBox1";
-			this.listBox1.Size = new System.Drawing.Size(169, 292);
-			this.listBox1.TabIndex = 5;
-			// 
-			// button1
-			// 
-			this.button1.Location = new System.Drawing.Point(12, 353);
-			this.button1.Name = "button1";
-			this.button1.Size = new System.Drawing.Size(974, 60);
-			this.button1.TabIndex = 6;
-			this.button1.Text = "Publish";
-			this.button1.UseVisualStyleBackColor = true;
-			// 
-			// ClassNameLb
-			// 
-			this.ClassNameLb.AutoSize = true;
-			this.ClassNameLb.Location = new System.Drawing.Point(17, 16);
-			this.ClassNameLb.Name = "ClassNameLb";
-			this.ClassNameLb.Size = new System.Drawing.Size(79, 17);
-			this.ClassNameLb.TabIndex = 0;
-			this.ClassNameLb.Text = "ClassName";
-			// 
-			// textBox2
-			// 
-			this.textBox2.Location = new System.Drawing.Point(150, 13);
-			this.textBox2.Name = "textBox2";
-			this.textBox2.Size = new System.Drawing.Size(629, 22);
-			this.textBox2.TabIndex = 7;
-			// 
-			// listBox2
-			// 
-			this.listBox2.FormattingEnabled = true;
-			this.listBox2.ItemHeight = 16;
-			this.listBox2.Location = new System.Drawing.Point(20, 50);
-			this.listBox2.Name = "listBox2";
-			this.listBox2.Size = new System.Drawing.Size(119, 196);
-			this.listBox2.TabIndex = 7;
-			// 
-			// label2
-			// 
-			this.label2.AutoSize = true;
-			this.label2.Location = new System.Drawing.Point(150, 50);
-			this.label2.Name = "label2";
-			this.label2.Size = new System.Drawing.Size(38, 17);
-			this.label2.TabIndex = 9;
-			this.label2.Text = "Field";
-			// 
-			// label3
-			// 
-			this.label3.AutoSize = true;
-			this.label3.Location = new System.Drawing.Point(150, 77);
-			this.label3.Name = "label3";
-			this.label3.Size = new System.Drawing.Size(55, 17);
-			this.label3.TabIndex = 10;
-			this.label3.Text = "Method";
-			// 
-			// label4
-			// 
-			this.label4.AutoSize = true;
-			this.label4.Location = new System.Drawing.Point(150, 106);
-			this.label4.Name = "label4";
-			this.label4.Size = new System.Drawing.Size(66, 17);
-			this.label4.TabIndex = 11;
-			this.label4.Text = "Propertie";
-			// 
-			// textBox3
-			// 
-			this.textBox3.Location = new System.Drawing.Point(223, 47);
-			this.textBox3.Name = "textBox3";
-			this.textBox3.Size = new System.Drawing.Size(289, 22);
-			this.textBox3.TabIndex = 12;
-			// 
-			// textBox4
-			// 
-			this.textBox4.Location = new System.Drawing.Point(223, 77);
-			this.textBox4.Name = "textBox4";
-			this.textBox4.Size = new System.Drawing.Size(289, 22);
-			this.textBox4.TabIndex = 13;
-			// 
-			// textBox5
-			// 
-			this.textBox5.Location = new System.Drawing.Point(222, 106);
-			this.textBox5.Name = "textBox5";
-			this.textBox5.Size = new System.Drawing.Size(289, 22);
-			this.textBox5.TabIndex = 14;
-			// 
-			// button2
-			// 
-			this.button2.Location = new System.Drawing.Point(20, 252);
-			this.button2.Name = "button2";
-			this.button2.Size = new System.Drawing.Size(759, 37);
-			this.button2.TabIndex = 8;
-			this.button2.Text = "Add";
-			this.button2.UseVisualStyleBackColor = true;
-			// 
-			// button3
-			// 
-			this.button3.Location = new System.Drawing.Point(518, 47);
-			this.button3.Name = "button3";
-			this.button3.Size = new System.Drawing.Size(261, 22);
-			this.button3.TabIndex = 15;
-			this.button3.Text = "Add";
-			this.button3.UseVisualStyleBackColor = true;
-			// 
-			// button4
-			// 
-			this.button4.Location = new System.Drawing.Point(518, 77);
-			this.button4.Name = "button4";
-			this.button4.Size = new System.Drawing.Size(261, 22);
-			this.button4.TabIndex = 16;
-			this.button4.Text = "Add";
-			this.button4.UseVisualStyleBackColor = true;
-			// 
-			// button5
-			// 
-			this.button5.Location = new System.Drawing.Point(518, 106);
-			this.button5.Name = "button5";
-			this.button5.Size = new System.Drawing.Size(261, 22);
-			this.button5.TabIndex = 17;
-			this.button5.Text = "Add";
-			this.button5.UseVisualStyleBackColor = true;
-			// 
-			// Form1
-			// 
-			this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
-			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(1011, 426);
-			this.Controls.Add(this.button1);
-			this.Controls.Add(this.listBox1);
-			this.Controls.Add(this.panel1);
-			this.Controls.Add(this.label1);
-			this.Controls.Add(this.textBox1);
-			this.Name = "Form1";
-			this.Text = "CodeGenStudio";
-			this.panel1.ResumeLayout(false);
-			this.panel1.PerformLayout();
-			this.ResumeLayout(false);
-			this.PerformLayout();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CodeGenStudio));
+            this.NamespaceBox = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.PublishButton = new System.Windows.Forms.Button();
+            this.NamespaceCreateButton = new System.Windows.Forms.Button();
+            this.ClassesPanel = new System.Windows.Forms.Panel();
+            this.CreateClassButton = new System.Windows.Forms.Button();
+            this.ClassNameBox = new System.Windows.Forms.TextBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.ClassPanel = new System.Windows.Forms.Panel();
+            this.label6 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.MembersBox = new System.Windows.Forms.ListBox();
+            this.SaveClassButton = new System.Windows.Forms.Button();
+            this.ClassesBox = new System.Windows.Forms.ListBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
+            this.FieldTypeBox = new System.Windows.Forms.ComboBox();
+            this.PropertyTypeBox = new System.Windows.Forms.ComboBox();
+            this.MethodTypeBox = new System.Windows.Forms.ComboBox();
+            this.FieldNameBox = new System.Windows.Forms.TextBox();
+            this.PropertyNameBox = new System.Windows.Forms.TextBox();
+            this.MethodNameBox = new System.Windows.Forms.TextBox();
+            this.FieldAddButton = new System.Windows.Forms.Button();
+            this.PropertyAddButton = new System.Windows.Forms.Button();
+            this.MethodAddButton = new System.Windows.Forms.Button();
+            this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
+            this.ClassesPanel.SuspendLayout();
+            this.ClassPanel.SuspendLayout();
+            this.SuspendLayout();
+            // 
+            // NamespaceBox
+            // 
+            resources.ApplyResources(this.NamespaceBox, "NamespaceBox");
+            this.NamespaceBox.Name = "NamespaceBox";
+            // 
+            // label1
+            // 
+            resources.ApplyResources(this.label1, "label1");
+            this.label1.Name = "label1";
+            // 
+            // PublishButton
+            // 
+            resources.ApplyResources(this.PublishButton, "PublishButton");
+            this.PublishButton.Name = "PublishButton";
+            this.PublishButton.UseVisualStyleBackColor = true;
+            this.PublishButton.Click += new System.EventHandler(this.button1_Click);
+            // 
+            // NamespaceCreateButton
+            // 
+            resources.ApplyResources(this.NamespaceCreateButton, "NamespaceCreateButton");
+            this.NamespaceCreateButton.Name = "NamespaceCreateButton";
+            this.NamespaceCreateButton.UseVisualStyleBackColor = true;
+            this.NamespaceCreateButton.Click += new System.EventHandler(this.NamespaceCreateButton_Click);
+            // 
+            // ClassesPanel
+            // 
+            this.ClassesPanel.Controls.Add(this.CreateClassButton);
+            this.ClassesPanel.Controls.Add(this.ClassNameBox);
+            this.ClassesPanel.Controls.Add(this.label3);
+            this.ClassesPanel.Controls.Add(this.ClassPanel);
+            this.ClassesPanel.Controls.Add(this.ClassesBox);
+            this.ClassesPanel.Controls.Add(this.label2);
+            resources.ApplyResources(this.ClassesPanel, "ClassesPanel");
+            this.ClassesPanel.Name = "ClassesPanel";
+            // 
+            // CreateClassButton
+            // 
+            resources.ApplyResources(this.CreateClassButton, "CreateClassButton");
+            this.CreateClassButton.Name = "CreateClassButton";
+            this.CreateClassButton.UseVisualStyleBackColor = true;
+            this.CreateClassButton.Click += new System.EventHandler(this.CreateClassButton_Click);
+            // 
+            // ClassNameBox
+            // 
+            resources.ApplyResources(this.ClassNameBox, "ClassNameBox");
+            this.ClassNameBox.Name = "ClassNameBox";
+            // 
+            // label3
+            // 
+            resources.ApplyResources(this.label3, "label3");
+            this.label3.Name = "label3";
+            // 
+            // ClassPanel
+            // 
+            this.ClassPanel.Controls.Add(this.MethodAddButton);
+            this.ClassPanel.Controls.Add(this.PropertyAddButton);
+            this.ClassPanel.Controls.Add(this.FieldAddButton);
+            this.ClassPanel.Controls.Add(this.MethodNameBox);
+            this.ClassPanel.Controls.Add(this.PropertyNameBox);
+            this.ClassPanel.Controls.Add(this.FieldNameBox);
+            this.ClassPanel.Controls.Add(this.MethodTypeBox);
+            this.ClassPanel.Controls.Add(this.PropertyTypeBox);
+            this.ClassPanel.Controls.Add(this.FieldTypeBox);
+            this.ClassPanel.Controls.Add(this.label7);
+            this.ClassPanel.Controls.Add(this.label6);
+            this.ClassPanel.Controls.Add(this.label5);
+            this.ClassPanel.Controls.Add(this.label4);
+            this.ClassPanel.Controls.Add(this.MembersBox);
+            this.ClassPanel.Controls.Add(this.SaveClassButton);
+            resources.ApplyResources(this.ClassPanel, "ClassPanel");
+            this.ClassPanel.Name = "ClassPanel";
+            // 
+            // label6
+            // 
+            resources.ApplyResources(this.label6, "label6");
+            this.label6.Name = "label6";
+            // 
+            // label5
+            // 
+            resources.ApplyResources(this.label5, "label5");
+            this.label5.Name = "label5";
+            // 
+            // label4
+            // 
+            resources.ApplyResources(this.label4, "label4");
+            this.label4.Name = "label4";
+            // 
+            // MembersBox
+            // 
+            this.MembersBox.FormattingEnabled = true;
+            resources.ApplyResources(this.MembersBox, "MembersBox");
+            this.MembersBox.Name = "MembersBox";
+            // 
+            // SaveClassButton
+            // 
+            resources.ApplyResources(this.SaveClassButton, "SaveClassButton");
+            this.SaveClassButton.Name = "SaveClassButton";
+            this.SaveClassButton.UseVisualStyleBackColor = true;
+            this.SaveClassButton.Click += new System.EventHandler(this.SaveClassButton_Click);
+            // 
+            // ClassesBox
+            // 
+            this.ClassesBox.FormattingEnabled = true;
+            resources.ApplyResources(this.ClassesBox, "ClassesBox");
+            this.ClassesBox.Name = "ClassesBox";
+            // 
+            // label2
+            // 
+            resources.ApplyResources(this.label2, "label2");
+            this.label2.Name = "label2";
+            // 
+            // label7
+            // 
+            resources.ApplyResources(this.label7, "label7");
+            this.label7.Name = "label7";
+            // 
+            // FieldTypeBox
+            // 
+            this.FieldTypeBox.FormattingEnabled = true;
+            this.FieldTypeBox.Items.AddRange(new object[] {
+            resources.GetString("FieldTypeBox.Items"),
+            resources.GetString("FieldTypeBox.Items1"),
+            resources.GetString("FieldTypeBox.Items2")});
+            resources.ApplyResources(this.FieldTypeBox, "FieldTypeBox");
+            this.FieldTypeBox.Name = "FieldTypeBox";
+            // 
+            // PropertyTypeBox
+            // 
+            this.PropertyTypeBox.FormattingEnabled = true;
+            this.PropertyTypeBox.Items.AddRange(new object[] {
+            resources.GetString("PropertyTypeBox.Items"),
+            resources.GetString("PropertyTypeBox.Items1"),
+            resources.GetString("PropertyTypeBox.Items2")});
+            resources.ApplyResources(this.PropertyTypeBox, "PropertyTypeBox");
+            this.PropertyTypeBox.Name = "PropertyTypeBox";
+            // 
+            // MethodTypeBox
+            // 
+            this.MethodTypeBox.FormattingEnabled = true;
+            this.MethodTypeBox.Items.AddRange(new object[] {
+            resources.GetString("MethodTypeBox.Items"),
+            resources.GetString("MethodTypeBox.Items1"),
+            resources.GetString("MethodTypeBox.Items2"),
+            resources.GetString("MethodTypeBox.Items3")});
+            resources.ApplyResources(this.MethodTypeBox, "MethodTypeBox");
+            this.MethodTypeBox.Name = "MethodTypeBox";
+            // 
+            // FieldNameBox
+            // 
+            resources.ApplyResources(this.FieldNameBox, "FieldNameBox");
+            this.FieldNameBox.Name = "FieldNameBox";
+            // 
+            // PropertyNameBox
+            // 
+            resources.ApplyResources(this.PropertyNameBox, "PropertyNameBox");
+            this.PropertyNameBox.Name = "PropertyNameBox";
+            // 
+            // MethodNameBox
+            // 
+            resources.ApplyResources(this.MethodNameBox, "MethodNameBox");
+            this.MethodNameBox.Name = "MethodNameBox";
+            // 
+            // FieldAddButton
+            // 
+            resources.ApplyResources(this.FieldAddButton, "FieldAddButton");
+            this.FieldAddButton.Name = "FieldAddButton";
+            this.FieldAddButton.UseVisualStyleBackColor = true;
+            this.FieldAddButton.Click += new System.EventHandler(this.FieldAddButton_Click);
+            // 
+            // PropertyAddButton
+            // 
+            resources.ApplyResources(this.PropertyAddButton, "PropertyAddButton");
+            this.PropertyAddButton.Name = "PropertyAddButton";
+            this.PropertyAddButton.UseVisualStyleBackColor = true;
+            this.PropertyAddButton.Click += new System.EventHandler(this.PropertyAddButton_Click);
+            // 
+            // MethodAddButton
+            // 
+            resources.ApplyResources(this.MethodAddButton, "MethodAddButton");
+            this.MethodAddButton.Name = "MethodAddButton";
+            this.MethodAddButton.UseVisualStyleBackColor = true;
+            this.MethodAddButton.Click += new System.EventHandler(this.MethodAddButton_Click);
+            // 
+            // CodeGenStudio
+            // 
+            resources.ApplyResources(this, "$this");
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.ClassesPanel);
+            this.Controls.Add(this.NamespaceCreateButton);
+            this.Controls.Add(this.PublishButton);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.NamespaceBox);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
+            this.Name = "CodeGenStudio";
+            this.ClassesPanel.ResumeLayout(false);
+            this.ClassesPanel.PerformLayout();
+            this.ClassPanel.ResumeLayout(false);
+            this.ClassPanel.PerformLayout();
+            this.ResumeLayout(false);
+            this.PerformLayout();
 
 		}
 
 		#endregion
 
-		private System.Windows.Forms.TextBox textBox1;
+		private System.Windows.Forms.TextBox NamespaceBox;
 		private System.Windows.Forms.Label label1;
-		private System.Windows.Forms.Panel panel1;
-		private System.Windows.Forms.Button button5;
-		private System.Windows.Forms.Button button4;
-		private System.Windows.Forms.Button button3;
-		private System.Windows.Forms.TextBox textBox5;
-		private System.Windows.Forms.TextBox textBox4;
-		private System.Windows.Forms.TextBox textBox3;
-		private System.Windows.Forms.Label label4;
-		private System.Windows.Forms.Label label3;
-		private System.Windows.Forms.Label label2;
-		private System.Windows.Forms.Button button2;
-		private System.Windows.Forms.ListBox listBox2;
-		private System.Windows.Forms.TextBox textBox2;
-		private System.Windows.Forms.Label ClassNameLb;
-		private System.Windows.Forms.ListBox listBox1;
-		private System.Windows.Forms.Button button1;
-	}
+        private System.Windows.Forms.Button PublishButton;
+        private System.Windows.Forms.Button NamespaceCreateButton;
+        private System.Windows.Forms.Panel ClassesPanel;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Button CreateClassButton;
+        private System.Windows.Forms.TextBox ClassNameBox;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Panel ClassPanel;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.ListBox MembersBox;
+        private System.Windows.Forms.Button SaveClassButton;
+        private System.Windows.Forms.ListBox ClassesBox;
+        private System.Windows.Forms.Button MethodAddButton;
+        private System.Windows.Forms.Button PropertyAddButton;
+        private System.Windows.Forms.Button FieldAddButton;
+        private System.Windows.Forms.TextBox MethodNameBox;
+        private System.Windows.Forms.TextBox PropertyNameBox;
+        private System.Windows.Forms.TextBox FieldNameBox;
+        private System.Windows.Forms.ComboBox MethodTypeBox;
+        private System.Windows.Forms.ComboBox PropertyTypeBox;
+        private System.Windows.Forms.ComboBox FieldTypeBox;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.SaveFileDialog saveFileDialog1;
+    }
 }
 

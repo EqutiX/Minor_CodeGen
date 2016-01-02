@@ -2,6 +2,7 @@
 using System.CodeDom;
 using System.Linq;
 using System.Diagnostics;
+using System.Reflection;
 
 namespace CodeGen
 {
@@ -19,6 +20,8 @@ namespace CodeGen
 		public ClassBuilder(string className)
 		{
 			_currentClass = new CodeTypeDeclaration( className );
+		    _currentClass.IsClass = true;
+            _currentClass.TypeAttributes = TypeAttributes.Public;
 		}
 
 		/// <summary>
@@ -27,7 +30,7 @@ namespace CodeGen
 		/// <param name="sFieldName"></param>
 		private T FindMember<T> ( string sFieldName) where T : CodeTypeMember
 		{
-		    return _currentClass.Members.Cast<T>().FirstOrDefault(member => member.Name == sFieldName);
+		    return _currentClass.Members.OfType<T>().FirstOrDefault(member => member.Name == sFieldName);
 		}
 
 
