@@ -5,7 +5,7 @@ using CodeGen;
 namespace UnitTestProject1
 {
 	[TestClass]
-	public class UnitTest1
+	public class ClassBuilderTests
 	{
         const string ClassName = "FirstClass";
 
