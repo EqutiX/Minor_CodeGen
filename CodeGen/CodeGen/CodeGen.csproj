@@ -42,7 +42,8 @@
   <ItemGroup>
     <Compile Include="ClassBuilder.cs" />
     <Compile Include="ClassBuilderExceptions.cs" />
-    <Compile Include="NamespaceBuilder.cs" />
+    <Compile Include="CompileUnitBuilder.cs" />
+    <Compile Include="CompileUntiBuilderExceptions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
