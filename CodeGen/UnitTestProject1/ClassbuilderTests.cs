@@ -8,9 +8,13 @@ namespace UnitTestProject1
 	public class ClassBuilderTests
 	{
         const string ClassName = "FirstClass";
+		const string FunctionName = "FirstFunction";
+		const string FirstFieldName = "FirstField";
+		const string FirstFieldValue = "FirstValue";
+		const string FirstPropertyName = "FirstProperty";
 
-        [TestMethod]
-		public void IfNewIntanceOfBetaBuilderGetDeclarationShouldReturnClassWithGivenName()
+		[TestMethod]
+		public void IfNewIntanceOfClassBuilderGetDeclarationShouldReturnClassWithGivenName()
 		{
 			
 			var builder = new ClassBuilder( ClassName );
@@ -25,13 +29,12 @@ namespace UnitTestProject1
 		{
 			
 			var builder = new ClassBuilder( ClassName );
-			const string firstFieldName = "FirstField";
 
-			var target = builder.AddField<string>( firstFieldName ).GetDeclaration();
+			var target = builder.AddField<string>( FirstFieldName ).GetDeclaration();
 
 			Assert.AreEqual( 1, target.Members.Count );
 			var member = target.Members[0];
-			Assert.AreEqual( firstFieldName, member.Name );
+			Assert.AreEqual( FirstFieldName, member.Name );
 		}
 
         [TestMethod]
@@ -40,9 +43,9 @@ namespace UnitTestProject1
         {
 
             var builder = new ClassBuilder(ClassName);
-            const string firstFieldName = "FirstField";
+            
 
-            builder.AddField<string>(firstFieldName).AddField<string>(firstFieldName).GetDeclaration();
+            builder.AddField<string>(FirstFieldName).AddField<string>(FirstFieldName).GetDeclaration();
 
         }
 
@@ -52,10 +55,9 @@ namespace UnitTestProject1
 		{
 
 			var builder = new ClassBuilder( ClassName );
-			const string firstFieldName = "FirstField";
-			const string firstFieldValue = "Value";
+			
 
-			builder.AddFieldValue( firstFieldName, firstFieldValue ).GetDeclaration();
+			builder.AddFieldValue( FirstFieldName, FirstFieldValue ).GetDeclaration();
 		}
 
 		[TestMethod]
@@ -63,10 +65,8 @@ namespace UnitTestProject1
 		{
 
 			var builder = new ClassBuilder( ClassName );
-			const string firstFieldName = "FirstField";
-			const string firstFieldValue = "Value";
 
-			var target = builder.AddField<string>( firstFieldName ).AddFieldValue( firstFieldName, firstFieldValue ).GetDeclaration();
+			var target = builder.AddField<string>( FirstFieldName ).AddFieldValue( FirstFieldName, FirstFieldValue ).GetDeclaration();
 			Assert.IsNotNull( target );
 		}
 
@@ -75,13 +75,12 @@ namespace UnitTestProject1
 		{
 
 			var builder = new ClassBuilder( ClassName );
-			const string functionName = "FirstFunction";
 
-			var target = builder.AddMethod<string>(functionName).GetDeclaration();
+			var target = builder.AddMethod<string>(FunctionName).GetDeclaration();
 
             Assert.AreEqual(1, target.Members.Count);
             var member = target.Members[0];
-            Assert.AreEqual(functionName, member.Name);
+            Assert.AreEqual(FunctionName, member.Name);
         }
 
 	    [TestMethod]
@@ -90,9 +89,8 @@ namespace UnitTestProject1
 	    {
 
             var builder = new ClassBuilder(ClassName);
-            const string functionName = "FirstFunction";
 
-            builder.AddMethod<string>(functionName).AddMethod<string>(functionName).GetDeclaration();
+            builder.AddMethod<string>(FunctionName).AddMethod<string>(FunctionName).GetDeclaration();
         }
 
 	    [TestMethod]
@@ -100,12 +98,11 @@ namespace UnitTestProject1
 	    {
 
             var builder = new ClassBuilder(ClassName);
-	        const string functionName = "VoidMethod";
 
-	        var target = builder.AddVoidMethod(functionName).GetDeclaration();
+	        var target = builder.AddVoidMethod(FunctionName).GetDeclaration();
 
             Assert.AreEqual(1,target.Members.Count);
-            Assert.AreEqual(functionName, target.Members[0].Name);
+            Assert.AreEqual(FunctionName, target.Members[0].Name);
 	    }
 
         [TestMethod]
@@ -113,22 +110,22 @@ namespace UnitTestProject1
         public void IfAddVoidMethodIsCalledTwiceWithTheSameNameAnExceptionShouldBeenThrown()
         {
             var builder = new ClassBuilder(ClassName);
-            const string functionName = "FirstFunction";
+            
 					
-            builder.AddVoidMethod(functionName).AddVoidMethod(functionName).GetDeclaration();
+            builder.AddVoidMethod(FunctionName).AddVoidMethod(FunctionName).GetDeclaration();
         }
 
 		[TestMethod]
 		public void IfAddPropertyIsCalledShouldAddPropertyToDeclaration()
 		{
 			var builder = new ClassBuilder(ClassName);
-			const string firstPropertyName = "FirstProperty";
+			
 
-			var target = builder.AddProperty<string>(firstPropertyName).GetDeclaration();
+			var target = builder.AddProperty<string>(FirstPropertyName).GetDeclaration();
 
 			Assert.AreEqual(1, target.Members.Count);
 			var member = target.Members[0];
-			Assert.AreEqual(firstPropertyName, member.Name);
+			Assert.AreEqual(FirstPropertyName, member.Name);
 		}
 
 		[TestMethod]
@@ -136,9 +133,25 @@ namespace UnitTestProject1
 		public void IfAddPropertyIsCalledTwiceWithTheSamePropertyNameShouldThrowException()
 		{
 			var builder = new ClassBuilder(ClassName);
-			const string firstPropertyName = "FirstProperty";
 
-			builder.AddProperty<string>(firstPropertyName).AddProperty<string>(firstPropertyName).GetDeclaration();
+			builder.AddProperty<string>(FirstPropertyName).AddProperty<string>(FirstPropertyName).GetDeclaration();
+		}
+
+		[TestMethod]
+		[ExpectedException(typeof(InvokeMethodDoesNotExistsException))]
+		public void IfInvokeMethodDoesNotExistsShouldThrowException()
+		{
+			var builder = new ClassBuilder(ClassName);
+			builder.InvokeMethod(FunctionName).GetDeclaration();
+			//builder.AddMethod<string>(FunctionName).GetDeclaration();
+		}
+
+		[TestMethod]
+		public void IfMethodIsInvoked()
+		{
+			var builder = new ClassBuilder(ClassName);
+			builder.AddVoidMethod(FunctionName).GetDeclaration();
+			builder.InvokeMethod(FunctionName).GetDeclaration();
 		}
 	}
 }

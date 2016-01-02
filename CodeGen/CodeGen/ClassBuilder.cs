@@ -1,6 +1,7 @@
 ﻿using System;
 using System.CodeDom;
 using System.Linq;
+using System.Diagnostics;
 
 namespace CodeGen
 {
@@ -136,8 +137,10 @@ namespace CodeGen
             if (FindMember<CodeMemberMethod>(name) != null) throw new MethodAlreadyExistsException();
 
             var method = CreateCodeMemberMethod(name, attr, new CodeTypeReference(typeof (void)));
-
-            _currentClass.Members.Add(method);
+			CodeExpression invokeExpr = new CodeMethodInvokeExpression(new CodeTypeReferenceExpression("Debug"), "WriteLine", new CodePrimitiveExpression("Example String"));
+			CodeExpressionStatement exprStatement = new CodeExpressionStatement(invokeExpr);
+			method.Statements.Add(exprStatement);
+			_currentClass.Members.Add(method);
             return this;
         }
 
@@ -191,6 +194,29 @@ namespace CodeGen
 			member.InitExpression = new CodePrimitiveExpression(oPropertyValue);*/
 
 			return this;
+		}
+
+		public ClassBuilder InvokeMethod(string name)
+		{
+			var method = FindMember<CodeMemberMethod>(name);
+			if( method == null )
+			{
+				throw new InvokeMethodDoesNotExistsException();
+            }
+
+			var invoke = new CodeMethodInvokeExpression(new CodeThisReferenceExpression(), name);
+
+			var test = new CodeMethodInvokeExpression(
+				new CodeThisReferenceExpression(),
+				"WriteLine",
+				new CodeExpression[] { new CodePrimitiveExpression("blabla") });
+			
+			return this;
+		}
+
+		public void WriteLine(string bla)
+		{
+			Debug.WriteLine(bla);
 		}
 	}
 }
