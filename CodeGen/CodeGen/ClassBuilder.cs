@@ -1,5 +1,5 @@
-﻿using System;
-using System.CodeDom;
+﻿using System.CodeDom;
+using System.Collections.Generic;
 using System.Linq;
 using System.Diagnostics;
 using System.Reflection;
@@ -20,9 +20,28 @@ namespace CodeGen
 		public ClassBuilder(string className, TypeAttributes attr = TypeAttributes.Public, bool isStatic = false)
 		{
 			_currentClass = new CodeTypeDeclaration((isStatic? "static ": "")+className );
-			_currentClass.IsClass = true;
+		    _currentClass.IsClass = true;
             _currentClass.TypeAttributes = attr;
 		}
+
+
+		/// <summary>
+		/// 
+		/// </summary>
+        /// <param name="parameterItems"></param>
+        /// <param name="lines"></param>
+        /// <returns></returns>
+        public ClassBuilder SetConstructor(ParameterItem[]parameterItems,string[] lines, MemberAttributes attr = MemberAttributes.Public)
+        {
+            var constructor = new CodeConstructor {Attributes = attr};
+
+            (parameterItems.ToList()).ForEach(
+                i => constructor.Parameters.Add(new CodeParameterDeclarationExpression(i.Type, i.Name)));
+
+            _currentClass.Members.Add(constructor);
+
+            return this;
+        }
 
 		/// <summary>
 		/// 
