@@ -11,21 +11,25 @@ namespace CodeGen
 		/// _currentClass is the only CodeTypeDeclaration we use in de builder. Its a readonly because it only can be set in the constructor. 
 		/// </summary>
 		private readonly CodeTypeDeclaration _currentClass;
-		
+
 		/// <summary>
-        /// The Construtor initializes _currentClass with the given class name.
+		/// The Construtor initializes _currentClass with the given class name.
 		/// </summary>
-        /// <param name="className">Name you want the class to have.</param>
-        /// <param name="attr">Attributes the class haves.</param>
-        /// <param name="isStatic">The make a class static or not. (DEFAULT IS FALSE)</param>
-		public ClassBuilder(string className, TypeAttributes attr = TypeAttributes.Public, bool isStatic = false)
+		/// <param name="className">Name you want the class to have.</param>
+		/// <param name="attr">Attributes the class haves.</param>
+		/// <param name="isStatic">The make a class static or not. (DEFAULT IS FALSE)</param>
+		/// <param name="isInterface">The make a class an interface or not. (DEFAULT IS FALSE)</param>
+		public ClassBuilder(string className, TypeAttributes attr = TypeAttributes.Public, bool isStatic = false, bool isInterface = false)
 		{
 			_currentClass = new CodeTypeDeclaration( );
-		    _currentClass = new CodeTypeDeclaration((isStatic ? "static " : "") + className)
-		    {
-		        IsClass = true,
-		        TypeAttributes = attr
-		    };
+			_currentClass = new CodeTypeDeclaration((isStatic ? "static " : "") + className)
+			{
+				IsClass = true,
+				
+				TypeAttributes = attr,
+				IsInterface = isInterface
+			};
+			_currentClass.BaseTypes.Add(new CodeTypeReference("BlaDieBla"));
 		}
 
 		/// <summary>
@@ -121,20 +125,20 @@ namespace CodeGen
 			return this;
 		}
 
-        /// <summary>
-        /// AddNethod adds a method to the CodeTypeDeclaration.
-        /// </summary>
-        /// <typeparam name="T">Type of method that will be added.</typeparam>
-        /// <param name="name">Name of the method that will be added.</param>
-        /// <param name="attr">Attributes of the method that will be added.</param>
-        /// <returns>The current ClassBuilder (this)</returns>
+		/// <summary>
+		/// AddNethod adds a method to the CodeTypeDeclaration.
+		/// </summary>
+		/// <typeparam name="T">Type of method that will be added.</typeparam>
+		/// <param name="name">Name of the method that will be added.</param>
+		/// <param name="attr">Attributes of the method that will be added.</param>
+		/// <returns>The current ClassBuilder (this)</returns>
 		public ClassBuilder AddMethod<T>(string name, MemberAttributes attr = MemberAttributes.Public)
         {
             //todo: parameters mee geven en toevoegen aan de zooi.
             if (FindMember<CodeMemberMethod>(name) != null) throw new MethodAlreadyExistsException();
 			
 		    var method = CreateCodeMemberMethod(name, attr,new CodeTypeReference(typeof(T)));
-
+			
             var returnStatement = new CodeMethodReturnStatement();
             method.Statements.Add( returnStatement );
 
@@ -176,6 +180,10 @@ namespace CodeGen
 			CodeVariableDeclarationStatement declStatment = new CodeVariableDeclarationStatement(
 				typeof(int), "i", new CodePrimitiveExpression(10));
 			method.Statements.Add(declStatment);
+
+			CodeCommentStatement commentStmt = new CodeCommentStatement(lines[0]);
+			method.Statements.Add(commentStmt);
+
 			_currentClass.Members.Add(method);
             return this;
         }
