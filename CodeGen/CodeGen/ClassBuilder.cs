@@ -245,10 +245,12 @@ namespace CodeGen
 		/// <returns>The current instance of the ClassBuilder</returns>
 		public ClassBuilder AddEntryPoint<T>(string functionName)
 		{
-			CodeEntryPointMethod start = new CodeEntryPointMethod();
-			start.Name = functionName;
-			start.ReturnType = new CodeTypeReference(typeof(T));
-			_currentClass.Members.Add(start);
+		    var start = new CodeEntryPointMethod
+		    {
+		        Name = functionName,
+		        ReturnType = new CodeTypeReference(typeof (T))
+		    };
+		    _currentClass.Members.Add(start);
 			return this;
 		}
 	}
