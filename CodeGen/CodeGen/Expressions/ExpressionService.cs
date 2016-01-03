@@ -11,14 +11,14 @@ namespace CodeGen.Expressions
 
     }
 
-    public class CodeStatmentService
+    public class CodeExpressionService
     {
         private static readonly List<BaseExpressionHelper> Helpers = new List<BaseExpressionHelper>
         {
 
         };
 
-        public static BaseExpressionHelper GetStatementHelper(CodeExpressionType codeStatementType)
+        public static BaseExpressionHelper GetExpressionHelper(CodeExpressionType codeStatementType)
         {
             return Helpers.SingleOrDefault(h => h.Supports(codeStatementType));
         }
