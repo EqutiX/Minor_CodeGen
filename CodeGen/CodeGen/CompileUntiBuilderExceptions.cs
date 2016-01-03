@@ -20,4 +20,8 @@ namespace CodeGen
         
     }
 
+	public class InterfaceDeclarationCanNotBeNullException : Exception
+	{
+
+	}
 }

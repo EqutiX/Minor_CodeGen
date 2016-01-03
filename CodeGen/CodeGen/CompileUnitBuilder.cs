@@ -53,6 +53,18 @@ namespace CodeGen
         }
 
 		/// <summary>
+		/// Adds an interface to the current namespace
+		/// </summary>
+		/// <param name="interfaceDeclaration">Type declaration of the interface</param>
+		/// <returns>The single CompileUnitBuilder instance</returns>
+		public CompileUnitBuilder AddInterface(CodeTypeDeclaration interfaceDeclaration)
+		{
+			if (interfaceDeclaration == null) throw new InterfaceDeclarationCanNotBeNullException();
+			_codeNamespace.Types.Add(interfaceDeclaration);
+			return this;
+		}
+
+		/// <summary>
 		/// Adds an import to the current namespace.
 		/// </summary>
 		/// <param name="usingName">Name of the import</param>

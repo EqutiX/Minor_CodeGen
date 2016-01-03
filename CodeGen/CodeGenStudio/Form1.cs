@@ -10,7 +10,9 @@ namespace CodeGenStudio
 	    private CompileUnitBuilder _currentCompileUnitBuilder;
 
 	    private ClassBuilder _currentClassBuilder;
-        public CodeGenStudio()
+		private InterfaceBuilder _currentInterfaceBuilder;
+
+		public CodeGenStudio()
 		{
 			InitializeComponent();
 		}
@@ -19,16 +21,13 @@ namespace CodeGenStudio
 	    {
 	        ClassesPanel.Visible = _currentCompileUnitBuilder != null;
 	        PublishButton.Enabled = _currentCompileUnitBuilder != null;
-	        
 	    }
 
 	    private void ToggelClassPanel()
 	    {
 	        ClassPanel.Visible = _currentClassBuilder != null;
 	    }
-
-        
-
+		
         private void NamespaceCreateButton_Click(object sender, EventArgs e)
         {
             _currentCompileUnitBuilder = new CompileUnitBuilder(NamespaceBox.Text);
@@ -120,8 +119,7 @@ namespace CodeGenStudio
                     _currentClassBuilder.AddMethod<bool>(MethodNameBox.Text, new ParameterItem[] { });
                     break;
                 case "void":
-                    _currentClassBuilder.AddVoidMethod(name: MethodNameBox.Text,parameterItems: new ParameterItem[] { }, lines: new string[] { "int i = 5;"});
-					_currentClassBuilder.AddEntryPoint<int>("Main");
+                    _currentClassBuilder.AddVoidMethod(name: MethodNameBox.Text,parameterItems: new ParameterItem[] { });
                     break;
                 default:
                     break;
@@ -134,7 +132,7 @@ namespace CodeGenStudio
         private void SaveClassButton_Click(object sender, EventArgs e)
         {
             _currentCompileUnitBuilder.AddClass(_currentClassBuilder.GetDeclaration());
-            UpdateClasses();
+			UpdateClasses();
             _currentClassBuilder = null;
             ToggelClassPanel();
             ClassNameBox.Text = "";

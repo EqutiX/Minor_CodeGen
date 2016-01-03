@@ -146,15 +146,5 @@ namespace UnitTestProject1
 			var member = target.Members[0];
 			Assert.AreEqual(FunctionName, member.Name);
 		}
-
-		[TestMethod]
-		public void IfAddInterfaceIsCalledShouldAddInterfaceToDeclaration()
-		{
-			var builder = new ClassBuilder(className: ClassName, isInterface: true);
-
-			var target = builder.GetDeclaration();
-
-			Assert.AreEqual(target.Name, ClassName);
-		}
 	}
 }
