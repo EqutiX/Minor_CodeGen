@@ -133,13 +133,14 @@ namespace CodeGen
         /// <param name="name">Name of the method that will be added.</param>
         /// <param name="parameterItems">An Array of Type/Name combinations to define what the parameters are.</param>
         /// <param name="attr">Attributes of the method that will be added.</param>
+        /// <param name="lines">An Array of strings to define the code-lines of the method.</param>
         /// <returns>The current ClassBuilder (this)</returns>
-        public ClassBuilder AddMethod<T>(string name, ParameterItem[] parameterItems, MemberAttributes attr = MemberAttributes.Public)
+        public ClassBuilder AddMethod<T>(string name, ParameterItem[] parameterItems, MemberAttributes attr = MemberAttributes.Public, string[] lines = null)
         {
             
             if (FindMember<CodeMemberMethod>(name) != null) throw new MethodAlreadyExistsException();
 			
-		    var method = CreateCodeMemberMethod(name, attr,new CodeTypeReference(typeof(T)),parameterItems);
+		    var method = CreateCodeMemberMethod(name, attr,new CodeTypeReference(typeof(T)),parameterItems,lines);
 
             var returnStatement = new CodeMethodReturnStatement();
             method.Statements.Add( returnStatement );
@@ -155,8 +156,9 @@ namespace CodeGen
         /// <param name="attr">Attributes of the method that is going to be created.</param>
         /// <param name="codeTypeReference">Return type of the method that is going to be created.</param>
         /// <param name="parameterItems">An Array of Type/Name combinations to define what the parameters are.</param>
+        /// <param name="lines">An Array of strings to define the code-lines of the method.</param>
         /// <returns>A new CodeMemberMethod that can be added to CodeTypeDeclaration members.</returns>
-        private static CodeMemberMethod CreateCodeMemberMethod(string name, MemberAttributes attr, CodeTypeReference codeTypeReference, ParameterItem[] parameterItems)
+        private static CodeMemberMethod CreateCodeMemberMethod(string name, MemberAttributes attr, CodeTypeReference codeTypeReference, ParameterItem[] parameterItems, string[] lines)
         {
             var codeMemberMethod =  new CodeMemberMethod
             {
@@ -169,6 +171,9 @@ namespace CodeGen
                 i =>
                     codeMemberMethod.Parameters.Add(new CodeParameterDeclarationExpression(
                         new CodeTypeReference(i.Type), name)));
+
+            lines?.ToList().ForEach(i => codeMemberMethod.Statements.Add(new CodeCommentStatement(i)));
+
 
             return codeMemberMethod;
         }
@@ -185,15 +190,13 @@ namespace CodeGen
         {
             if (FindMember<CodeMemberMethod>(name) != null) throw new MethodAlreadyExistsException();
 
-            var method = CreateCodeMemberMethod(name, attr, new CodeTypeReference(typeof (void)),parameterItems);
+            var method = CreateCodeMemberMethod(name, attr, new CodeTypeReference(typeof (void)),parameterItems, lines);
 			var declStatment = new CodeVariableDeclarationStatement(
 				typeof(int), "i", new CodePrimitiveExpression(10));
 			method.Statements.Add(declStatment);
-
-			CodeCommentStatement commentStmt = new CodeCommentStatement(lines[0]);
-			method.Statements.Add(commentStmt);
-
-			_currentClass.Members.Add(method);
+            
+          
+            _currentClass.Members.Add(method);
             return this;
         }
 
