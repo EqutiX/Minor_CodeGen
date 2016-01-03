@@ -1,8 +1,6 @@
 ﻿using System.CodeDom;
 using System.Linq;
 using System.Reflection;
-using System;
-using System.Runtime.Remoting.Lifetime;
 
 namespace CodeGen
 {
