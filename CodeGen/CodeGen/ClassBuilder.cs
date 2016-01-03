@@ -1,6 +1,5 @@
 ﻿using System.CodeDom;
 using System.Linq;
-using System.Diagnostics;
 using System.Reflection;
 
 namespace CodeGen
@@ -11,15 +10,15 @@ namespace CodeGen
 		/// _currentClass is the only CodeTypeDeclaration we use in de builder. Its a readonly because it only can be set in the constructor. 
 		/// </summary>
 		private readonly CodeTypeDeclaration _currentClass;
-		
-		/// <summary>
-		/// The Construtor initializes _currentClass with the given class name.
-		/// </summary>
-		/// <param name="className">Name you want the class to have.</param>
-		
-		public ClassBuilder(string className, TypeAttributes attr = TypeAttributes.Public, bool isStatic = false)
+
+        /// <summary>
+        /// The Construtor initializes _currentClass with the given class name.
+        /// </summary>
+        /// <param name="className">Name you want the class to have.</param>
+        /// <param name="attr">Attributes the class haves.</param>
+        /// <param name="isStatic">The make a class static or not. (DEFAULT IS FALSE)</param>
+        public ClassBuilder(string className, TypeAttributes attr = TypeAttributes.Public, bool isStatic = false)
 		{
-            //todo: summary
 			_currentClass = new CodeTypeDeclaration( );
 		    _currentClass = new CodeTypeDeclaration((isStatic ? "static " : "") + className)
 		    {
@@ -165,11 +164,10 @@ namespace CodeGen
         /// </summary>
         /// <param name="name">Name of the mehtod that will be added.</param>
         /// <param name="attr">Attributes of the method that will be added.</param>
+        /// <param name="lines">An Array of strings to define the code-lines of the method.</param>
         /// <returns>The current ClassBuilder (this)</returns>
-
         public ClassBuilder AddVoidMethod(string name, MemberAttributes attr = MemberAttributes.Public, string[] lines = null)
         {
-            //todo: summary
             //todo: parameters mee geven en toevoegen aan de zooi.
             if (FindMember<CodeMemberMethod>(name) != null) throw new MethodAlreadyExistsException();
 
