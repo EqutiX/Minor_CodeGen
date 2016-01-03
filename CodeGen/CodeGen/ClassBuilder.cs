@@ -226,6 +226,7 @@ namespace CodeGen
         /// <returns>The current ClassBuilder (this)</returns>
         public ClassBuilder AddPropertyValue<T>(string propertyName, T propertyValue)
 		{
+            //todo: ???
 			/*var member = FindMember<CodeMemberProperty>(sPropertyName);
 
 			if (member == null)
