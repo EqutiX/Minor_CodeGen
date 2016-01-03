@@ -1,6 +1,6 @@
 ﻿using System.CodeDom;
 
-namespace CodeGen
+namespace CodeGen.Statements
 {
     public abstract class BaseStatementHelper
     {

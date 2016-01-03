@@ -1,6 +1,6 @@
 using System;
 
-namespace CodeGen
+namespace CodeGen.Statements
 {
     public class IncorectStatementInfoException : Exception
     {

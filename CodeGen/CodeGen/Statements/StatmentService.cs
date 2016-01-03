@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace CodeGen
+namespace CodeGen.Statements
 {
     public enum CodeStatementType
     {
