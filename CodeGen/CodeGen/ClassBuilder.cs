@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Reflection;
 using System;
+using System.Runtime.Remoting.Lifetime;
 
 namespace CodeGen
 {
@@ -126,14 +127,15 @@ namespace CodeGen
         /// </summary>
         /// <typeparam name="T">Type of method that will be added.</typeparam>
         /// <param name="name">Name of the method that will be added.</param>
+        /// <param name="parameterItems">An Array of Type/Name combinations to define what the parameters are.</param>
         /// <param name="attr">Attributes of the method that will be added.</param>
         /// <returns>The current ClassBuilder (this)</returns>
-		public ClassBuilder AddMethod<T>(string name, MemberAttributes attr = MemberAttributes.Public)
+        public ClassBuilder AddMethod<T>(string name, ParameterItem[] parameterItems, MemberAttributes attr = MemberAttributes.Public)
         {
-            //todo: parameters mee geven en toevoegen aan de zooi.
+            
             if (FindMember<CodeMemberMethod>(name) != null) throw new MethodAlreadyExistsException();
 			
-		    var method = CreateCodeMemberMethod(name, attr,new CodeTypeReference(typeof(T)));
+		    var method = CreateCodeMemberMethod(name, attr,new CodeTypeReference(typeof(T)),parameterItems);
 
             var returnStatement = new CodeMethodReturnStatement();
             method.Statements.Add( returnStatement );
@@ -148,32 +150,39 @@ namespace CodeGen
         /// <param name="name">Name of the method that is going to be created.</param>
         /// <param name="attr">Attributes of the method that is going to be created.</param>
         /// <param name="codeTypeReference">Return type of the method that is going to be created.</param>
+        /// <param name="parameterItems">An Array of Type/Name combinations to define what the parameters are.</param>
         /// <returns>A new CodeMemberMethod that can be added to CodeTypeDeclaration members.</returns>
-        private static CodeMemberMethod CreateCodeMemberMethod(string name, MemberAttributes attr, CodeTypeReference codeTypeReference)
+        private static CodeMemberMethod CreateCodeMemberMethod(string name, MemberAttributes attr, CodeTypeReference codeTypeReference, ParameterItem[] parameterItems)
         {
-            //todo: parameters mee geven en toevoegen aan de zooi.
-            return new CodeMemberMethod
+            var codeMemberMethod =  new CodeMemberMethod
             {
                 Attributes = attr,
                 Name = name,
                 ReturnType = codeTypeReference
             };
+
+            (parameterItems.ToList()).ForEach(
+                i =>
+                    codeMemberMethod.Parameters.Add(new CodeParameterDeclarationExpression(
+                        new CodeTypeReference(i.Type), name)));
+
+            return codeMemberMethod;
         }
 
         /// <summary>
         /// AddVoidMethod adds a void method to the CodeTypeDeclaration.
         /// </summary>
         /// <param name="name">Name of the mehtod that will be added.</param>
+        /// <param name="parameterItems">An Array of Type/Name combinations to define what the parameters are.</param>
         /// <param name="attr">Attributes of the method that will be added.</param>
         /// <param name="lines">An Array of strings to define the code-lines of the method.</param>
         /// <returns>The current ClassBuilder (this)</returns>
-        public ClassBuilder AddVoidMethod(string name, MemberAttributes attr = MemberAttributes.Public, string[] lines = null)
+        public ClassBuilder AddVoidMethod(string name, ParameterItem[] parameterItems, MemberAttributes attr = MemberAttributes.Public, string[] lines = null)
         {
-            //todo: parameters mee geven en toevoegen aan de zooi.
             if (FindMember<CodeMemberMethod>(name) != null) throw new MethodAlreadyExistsException();
 
-            var method = CreateCodeMemberMethod(name, attr, new CodeTypeReference(typeof (void)));
-			CodeVariableDeclarationStatement declStatment = new CodeVariableDeclarationStatement(
+            var method = CreateCodeMemberMethod(name, attr, new CodeTypeReference(typeof (void)),parameterItems);
+			var declStatment = new CodeVariableDeclarationStatement(
 				typeof(int), "i", new CodePrimitiveExpression(10));
 			method.Statements.Add(declStatment);
 			_currentClass.Members.Add(method);
