@@ -40,13 +40,21 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Expressions\ExpressionHelpers.cs" />
+    <Compile Include="Expressions\ExpressionInfoModels.cs" />
+    <Compile Include="Expressions\ExpressionService.cs" />
+    <Compile Include="Expressions\ExpressionServiceExceptions.cs" />
+    <Compile Include="Statements\StatmentServiceExceptions.cs" />
+    <Compile Include="Statements\StatementHelpers.cs" />
     <Compile Include="ClassBuilder.cs" />
     <Compile Include="ClassBuilderExceptions.cs" />
     <Compile Include="CompileUnitBuilder.cs" />
     <Compile Include="CompileUntiBuilderExceptions.cs" />
     <Compile Include="InterfaceBuilder.cs" />
+    <Compile Include="Statements\StatementInfoModels.cs" />
     <Compile Include="ParameterItem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Statements\StatmentService.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

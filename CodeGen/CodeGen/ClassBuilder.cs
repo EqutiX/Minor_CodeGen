@@ -1,4 +1,5 @@
 ﻿using System.CodeDom;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
@@ -156,7 +157,7 @@ namespace CodeGen
         /// <param name="parameterItems">An Array of Type/Name combinations to define what the parameters are.</param>
         /// <param name="lines">An Array of strings to define the code-lines of the method.</param>
         /// <returns>A new CodeMemberMethod that can be added to CodeTypeDeclaration members.</returns>
-        private static CodeMemberMethod CreateCodeMemberMethod(string name, MemberAttributes attr, CodeTypeReference codeTypeReference, ParameterItem[] parameterItems, string[] lines)
+        private static CodeMemberMethod CreateCodeMemberMethod(string name, MemberAttributes attr, CodeTypeReference codeTypeReference, IEnumerable<ParameterItem> parameterItems, IEnumerable<string> lines)
         {
             var codeMemberMethod =  new CodeMemberMethod
             {
