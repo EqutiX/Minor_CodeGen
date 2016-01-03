@@ -120,7 +120,7 @@ namespace CodeGenStudio
                     _currentClassBuilder.AddMethod<bool>(MethodNameBox.Text);
                     break;
                 case "void":
-                    _currentClassBuilder.AddVoidMethod(MethodNameBox.Text);
+                    _currentClassBuilder.AddVoidMethod(name: MethodNameBox.Text, lines: new string[] { "int i = 5;"});
                     break;
                 default:
                     break;

@@ -16,12 +16,15 @@ namespace CodeGen
 		/// The Construtor initializes _currentClass with the given class name.
 		/// </summary>
 		/// <param name="className">Name you want the class to have.</param>
-		public ClassBuilder(string className)
+		
+		public ClassBuilder(string className, TypeAttributes attr = TypeAttributes.Public, bool isStatic = false)
 		{
-		    _currentClass = new CodeTypeDeclaration(className)
+            //todo: summary
+			_currentClass = new CodeTypeDeclaration( );
+		    _currentClass = new CodeTypeDeclaration((isStatic ? "static " : "") + className)
 		    {
 		        IsClass = true,
-		        TypeAttributes = TypeAttributes.Public
+		        TypeAttributes = attr
 		    };
 		}
 
@@ -44,9 +47,9 @@ namespace CodeGen
             return this;
         }
 
-        /// <summary>
+		/// <summary>
         /// FindMembers find members of given Type and with given field name.
-        /// </summary>
+		/// </summary>
         /// <typeparam name="T">Type you want to find needs to be a type of CodeTypeMember.</typeparam>
         /// <param name="name">Name of member you want to find.</param>
         /// <returns>Found member or null.</returns>
@@ -90,18 +93,18 @@ namespace CodeGen
             _currentClass.Members.Add( field );
 		}
 
-        /// <summary>
+		/// <summary>
         /// Returns the CodeTypeDeclaration used in the builder.
-        /// </summary>
+		/// </summary>
         /// <returns>CodeTypeDeclaration used in the builder</returns>
-        public CodeTypeDeclaration GetDeclaration()
+		public CodeTypeDeclaration GetDeclaration()
 		{
 			return _currentClass;
 		}
 
-        /// <summary>
+		/// <summary>
         /// AddFieldValue adds a value to an already created field.
-        /// </summary>
+		/// </summary>
         /// <typeparam name="T">Type of the field that is going to be used.</typeparam>
         /// <param name="fieldName">Name of the field that is going to be used.</param>
         /// <param name="fieldValue">Value that is going to be set.</param>
@@ -125,7 +128,7 @@ namespace CodeGen
         /// <param name="name">Name of the method that will be added.</param>
         /// <param name="attr">Attributes of the method that will be added.</param>
         /// <returns>The current ClassBuilder (this)</returns>
-        public ClassBuilder AddMethod<T>(string name, MemberAttributes attr = MemberAttributes.Public)
+		public ClassBuilder AddMethod<T>(string name, MemberAttributes attr = MemberAttributes.Public)
         {
             //todo: parameters mee geven en toevoegen aan de zooi.
             if (FindMember<CodeMemberMethod>(name) != null) throw new MethodAlreadyExistsException();
@@ -163,22 +166,24 @@ namespace CodeGen
         /// <param name="name">Name of the mehtod that will be added.</param>
         /// <param name="attr">Attributes of the method that will be added.</param>
         /// <returns>The current ClassBuilder (this)</returns>
-        public ClassBuilder AddVoidMethod(string name, MemberAttributes attr = MemberAttributes.Public)
+
+        public ClassBuilder AddVoidMethod(string name, MemberAttributes attr = MemberAttributes.Public, string[] lines = null)
         {
+            //todo: summary
             //todo: parameters mee geven en toevoegen aan de zooi.
             if (FindMember<CodeMemberMethod>(name) != null) throw new MethodAlreadyExistsException();
 
             var method = CreateCodeMemberMethod(name, attr, new CodeTypeReference(typeof (void)));
-			CodeExpression invokeExpr = new CodeMethodInvokeExpression(new CodeTypeReferenceExpression("Debug"), "WriteLine", new CodePrimitiveExpression("Example String"));
-			CodeExpressionStatement exprStatement = new CodeExpressionStatement(invokeExpr);
-			method.Statements.Add(exprStatement);
+			CodePrimitiveExpression expr = new CodePrimitiveExpression(lines[0]);
+			CodeVariableDeclarationStatement decl1 = new CodeVariableDeclarationStatement(typeof(int), "i", new CodePrimitiveExpression(10));
+			method.Statements.Add(decl1);
 			_currentClass.Members.Add(method);
             return this;
         }
 
-        /// <summary>
+		/// <summary>
         /// AddProperty adds a property to the CodeTypeDeclaration.
-        /// </summary>
+		/// </summary>
         /// <typeparam name="T">Type of property that is going to be added.</typeparam>
         /// <param name="propertyName">Name of the property that is going to be added.</param>
         /// <param name="attr">Attributes of the property that is going to be added.</param>
@@ -190,10 +195,10 @@ namespace CodeGen
 			CreateCodeMemberProperty<T>(propertyName, attr);
 			return this;
 		}
-
-        /// <summary>
+		
+		/// <summary>
         /// CreateCodeMemberProperty creates a proptery and adds it to the CodeTypeDeclaration.
-        /// </summary>
+		/// </summary>
         /// <typeparam name="T">Type of the property.</typeparam>
         /// <param name="propertyName">Name of the property.</param>
         /// <param name="attr">Attributes of the property.</param>
@@ -211,11 +216,11 @@ namespace CodeGen
 			property.SetStatements.Add(new CodeAssignStatement(new CodeFieldReferenceExpression(new CodeThisReferenceExpression(), propertyName + "Value"), new CodePropertySetValueReferenceExpression()));
 			_currentClass.Members.Add(property);
 		}
+		
 
-
-        /// <summary>
+		/// <summary>
         /// AddPropertyValue adds a value to an already created property.
-        /// </summary>
+		/// </summary>
         /// <typeparam name="T">Type of property that is going to be used.</typeparam>
         /// <param name="propertyName">Name of the property that is going to be used.</param>
         /// <param name="propertyValue">Value that is going to be set.</param>
@@ -231,30 +236,5 @@ namespace CodeGen
 
 			return this;
 		}
-
-		public ClassBuilder InvokeMethod(string name)
-		{
-			var method = FindMember<CodeMemberMethod>(name);
-			if( method == null )
-			{
-				throw new InvokeMethodDoesNotExistsException();
-            }
-
-			var invoke = new CodeMethodInvokeExpression(new CodeThisReferenceExpression(), name);
-
-			var test = new CodeMethodInvokeExpression(
-				new CodeThisReferenceExpression(),
-				"WriteLine",
-				new CodeExpression[] { new CodePrimitiveExpression("blabla") });
-			
-			return this;
-		}
-
-		public void WriteLine(string bla)
-		{
-			Debug.WriteLine(bla);
-		}
-
-
 	}
 }

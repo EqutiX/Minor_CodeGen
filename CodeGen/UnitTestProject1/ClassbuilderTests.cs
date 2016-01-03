@@ -136,22 +136,5 @@ namespace UnitTestProject1
 
 			builder.AddProperty<string>(FirstPropertyName).AddProperty<string>(FirstPropertyName).GetDeclaration();
 		}
-
-		[TestMethod]
-		[ExpectedException(typeof(InvokeMethodDoesNotExistsException))]
-		public void IfInvokeMethodDoesNotExistsShouldThrowException()
-		{
-			var builder = new ClassBuilder(ClassName);
-			builder.InvokeMethod(FunctionName).GetDeclaration();
-			//builder.AddMethod<string>(FunctionName).GetDeclaration();
-		}
-
-		[TestMethod]
-		public void IfMethodIsInvoked()
-		{
-			var builder = new ClassBuilder(ClassName);
-			builder.AddVoidMethod(FunctionName).GetDeclaration();
-			builder.InvokeMethod(FunctionName).GetDeclaration();
-		}
 	}
 }
