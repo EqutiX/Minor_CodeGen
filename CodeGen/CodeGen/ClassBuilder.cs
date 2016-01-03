@@ -62,9 +62,7 @@ namespace CodeGen
 		{
 		    return _currentClass.Members.OfType<T>().FirstOrDefault(member => member.Name == name);
 		}
-
-
-
+		
         /// <summary>
         /// AddField adds a new CodeMemberField to the CodeTypeDeclaration with the given name and attributes.
         /// </summary>
@@ -79,8 +77,7 @@ namespace CodeGen
             CreateCodeMemberField<T>( fieldName, attr);
             return this;
         }
-
-
+		
         /// <summary>
         /// CreateCodeMemberField Creates a CodeMemberField and adds it to the _currentClass members.
         /// </summary>
@@ -137,7 +134,6 @@ namespace CodeGen
         /// <returns>The current ClassBuilder (this)</returns>
         public ClassBuilder AddMethod<T>(string name, ParameterItem[] parameterItems, MemberAttributes attr = MemberAttributes.Public, string[] lines = null)
         {
-            
             if (FindMember<CodeMemberMethod>(name) != null) throw new MethodAlreadyExistsException();
 			
 		    var method = CreateCodeMemberMethod(name, attr,new CodeTypeReference(typeof(T)),parameterItems,lines);
@@ -235,7 +231,6 @@ namespace CodeGen
 			property.SetStatements.Add(new CodeAssignStatement(new CodeFieldReferenceExpression(new CodeThisReferenceExpression(), propertyName + "Value"), new CodePropertySetValueReferenceExpression()));
 			_currentClass.Members.Add(property);
 		}
-		
 
 		/// <summary>
         /// AddPropertyValue adds a value to an already created property.
