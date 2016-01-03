@@ -136,5 +136,15 @@ namespace UnitTestProject1
 
 			builder.AddProperty<string>(FirstPropertyName).AddProperty<string>(FirstPropertyName).GetDeclaration();
 		}
+
+		[TestMethod]
+		public void IfAddEntryPointIsCalledShouldAddEntryPointToDeclaration()
+		{
+			var builder = new ClassBuilder(ClassName);
+			var target = builder.AddEntryPoint<int>(FunctionName).GetDeclaration();
+
+			var member = target.Members[0];
+			Assert.AreEqual(FunctionName, member.Name);
+		}
 	}
 }

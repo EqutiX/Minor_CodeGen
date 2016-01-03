@@ -121,6 +121,7 @@ namespace CodeGenStudio
                     break;
                 case "void":
                     _currentClassBuilder.AddVoidMethod(name: MethodNameBox.Text, lines: new string[] { "int i = 5;"});
+					_currentClassBuilder.AddEntryPoint<int>("Main");
                     break;
                 default:
                     break;

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Diagnostics;
 using System.Reflection;
+using System;
 
 namespace CodeGen
 {
@@ -148,20 +149,20 @@ namespace CodeGen
             };
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="name"></param>
-        /// <param name="attr"></param>
-        /// <returns></returns>
-        public ClassBuilder AddVoidMethod(string name, MemberAttributes attr = MemberAttributes.Public, string[] lines = null)
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="name"></param>
+		/// <param name="attr"></param>
+		/// <returns></returns>
+		public ClassBuilder AddVoidMethod(string name, MemberAttributes attr = MemberAttributes.Public, string[] lines = null)
         {
             if (FindMember<CodeMemberMethod>(name) != null) throw new MethodAlreadyExistsException();
 
             var method = CreateCodeMemberMethod(name, attr, new CodeTypeReference(typeof (void)));
-			CodePrimitiveExpression expr = new CodePrimitiveExpression(lines[0]);
-			CodeVariableDeclarationStatement decl1 = new CodeVariableDeclarationStatement(typeof(int), "i", new CodePrimitiveExpression(10));
-			method.Statements.Add(decl1);
+			CodeVariableDeclarationStatement declStatment = new CodeVariableDeclarationStatement(
+				typeof(int), "i", new CodePrimitiveExpression(10));
+			method.Statements.Add(declStatment);
 			_currentClass.Members.Add(method);
             return this;
         }
@@ -215,6 +216,21 @@ namespace CodeGen
 
 			member.InitExpression = new CodePrimitiveExpression(oPropertyValue);*/
 
+			return this;
+		}
+
+		/// <summary>
+		/// Adds an entrypoint to the current class
+		/// </summary>
+		/// <typeparam name="T">return type of the entrypoint</typeparam>
+		/// <param name="functionName">Name of the entrypoint function</param>
+		/// <returns>The current instance of the ClassBuilder</returns>
+		public ClassBuilder AddEntryPoint<T>(string functionName)
+		{
+			CodeEntryPointMethod start = new CodeEntryPointMethod();
+			start.Name = functionName;
+			start.ReturnType = new CodeTypeReference(typeof(T));
+			_currentClass.Members.Add(start);
 			return this;
 		}
 	}
