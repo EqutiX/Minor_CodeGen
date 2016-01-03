@@ -17,11 +17,11 @@ namespace CodeGen
 		/// 
 		/// </summary>
 		/// <param name="className"></param>
-		public ClassBuilder(string className)
+		public ClassBuilder(string className, TypeAttributes attr = TypeAttributes.Public, bool isStatic = false)
 		{
-			_currentClass = new CodeTypeDeclaration( className );
-		    _currentClass.IsClass = true;
-            _currentClass.TypeAttributes = TypeAttributes.Public;
+			_currentClass = new CodeTypeDeclaration((isStatic? "static ": "")+className );
+			_currentClass.IsClass = true;
+            _currentClass.TypeAttributes = attr;
 		}
 
 		/// <summary>
@@ -135,14 +135,14 @@ namespace CodeGen
         /// <param name="name"></param>
         /// <param name="attr"></param>
         /// <returns></returns>
-        public ClassBuilder AddVoidMethod(string name, MemberAttributes attr = MemberAttributes.Public)
+        public ClassBuilder AddVoidMethod(string name, MemberAttributes attr = MemberAttributes.Public, string[] lines = null)
         {
             if (FindMember<CodeMemberMethod>(name) != null) throw new MethodAlreadyExistsException();
 
             var method = CreateCodeMemberMethod(name, attr, new CodeTypeReference(typeof (void)));
-			CodeExpression invokeExpr = new CodeMethodInvokeExpression(new CodeTypeReferenceExpression("Debug"), "WriteLine", new CodePrimitiveExpression("Example String"));
-			CodeExpressionStatement exprStatement = new CodeExpressionStatement(invokeExpr);
-			method.Statements.Add(exprStatement);
+			CodePrimitiveExpression expr = new CodePrimitiveExpression(lines[0]);
+			CodeVariableDeclarationStatement decl1 = new CodeVariableDeclarationStatement(typeof(int), "i", new CodePrimitiveExpression(10));
+			method.Statements.Add(decl1);
 			_currentClass.Members.Add(method);
             return this;
         }
@@ -197,29 +197,6 @@ namespace CodeGen
 			member.InitExpression = new CodePrimitiveExpression(oPropertyValue);*/
 
 			return this;
-		}
-
-		public ClassBuilder InvokeMethod(string name)
-		{
-			var method = FindMember<CodeMemberMethod>(name);
-			if( method == null )
-			{
-				throw new InvokeMethodDoesNotExistsException();
-            }
-
-			var invoke = new CodeMethodInvokeExpression(new CodeThisReferenceExpression(), name);
-
-			var test = new CodeMethodInvokeExpression(
-				new CodeThisReferenceExpression(),
-				"WriteLine",
-				new CodeExpression[] { new CodePrimitiveExpression("blabla") });
-			
-			return this;
-		}
-
-		public void WriteLine(string bla)
-		{
-			Debug.WriteLine(bla);
 		}
 	}
 }

@@ -26,9 +26,4 @@ namespace CodeGen
 	{
 
 	}
-
-	public class InvokeMethodDoesNotExistsException : Exception
-	{
-
-	}
 }
