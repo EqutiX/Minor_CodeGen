@@ -111,16 +111,16 @@ namespace CodeGenStudio
             switch (MethodTypeBox.Text)
             {
                 case "string":
-                    _currentClassBuilder.AddMethod<string>(MethodNameBox.Text);
+                    _currentClassBuilder.AddMethod<string>(MethodNameBox.Text, new ParameterItem[] { });
                     break;
                 case "int":
-                    _currentClassBuilder.AddMethod<int>(MethodNameBox.Text);
+                    _currentClassBuilder.AddMethod<int>(MethodNameBox.Text, new ParameterItem[] { });
                     break;
                 case "bool":
-                    _currentClassBuilder.AddMethod<bool>(MethodNameBox.Text);
+                    _currentClassBuilder.AddMethod<bool>(MethodNameBox.Text, new ParameterItem[] { });
                     break;
                 case "void":
-                    _currentClassBuilder.AddVoidMethod(name: MethodNameBox.Text, lines: new string[] { "int i = 5;"});
+                    _currentClassBuilder.AddVoidMethod(name: MethodNameBox.Text,parameterItems: new ParameterItem[] { }, lines: new string[] { "int i = 5;"});
 					_currentClassBuilder.AddEntryPoint<int>("Main");
                     break;
                 default:

@@ -76,7 +76,7 @@ namespace UnitTestProject1
 
 			var builder = new ClassBuilder( ClassName );
 
-			var target = builder.AddMethod<string>(FunctionName).GetDeclaration();
+			var target = builder.AddMethod<string>(FunctionName, new ParameterItem[]{}).GetDeclaration();
 
             Assert.AreEqual(1, target.Members.Count);
             var member = target.Members[0];
@@ -90,7 +90,7 @@ namespace UnitTestProject1
 
             var builder = new ClassBuilder(ClassName);
 
-            builder.AddMethod<string>(FunctionName).AddMethod<string>(FunctionName).GetDeclaration();
+            builder.AddMethod<string>(FunctionName, new ParameterItem[] { }).AddMethod<string>(FunctionName, new ParameterItem[] { }).GetDeclaration();
         }
 
 	    [TestMethod]
@@ -99,7 +99,7 @@ namespace UnitTestProject1
 
             var builder = new ClassBuilder(ClassName);
 
-	        var target = builder.AddVoidMethod(FunctionName).GetDeclaration();
+	        var target = builder.AddVoidMethod(FunctionName, new ParameterItem[] { }).GetDeclaration();
 
             Assert.AreEqual(1,target.Members.Count);
             Assert.AreEqual(FunctionName, target.Members[0].Name);
@@ -112,7 +112,7 @@ namespace UnitTestProject1
             var builder = new ClassBuilder(ClassName);
             
 					
-            builder.AddVoidMethod(FunctionName).AddVoidMethod(FunctionName).GetDeclaration();
+            builder.AddVoidMethod(FunctionName, new ParameterItem[] { }).AddVoidMethod(FunctionName, new ParameterItem[] { }).GetDeclaration();
         }
 
 		[TestMethod]
