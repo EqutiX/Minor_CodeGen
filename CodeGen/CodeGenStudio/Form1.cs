@@ -65,16 +65,31 @@ namespace CodeGenStudio
 
         private void FieldAddButton_Click(object sender, EventArgs e)
         {
-            switch (FieldTypeBox.Text)
+			MemberAttributes attr = MemberAttributes.Public;
+			switch (FieldAccessBox.Text)
+			{
+				case "public":
+					attr = MemberAttributes.Public;
+					break;
+				case "protected":
+					attr = MemberAttributes.Family;
+					break;
+				case "private":
+					attr = MemberAttributes.Private;
+					break;
+				default:
+					break;
+			}
+			switch (FieldTypeBox.Text)
             {
                 case "string":
-                    _currentClassBuilder.AddField<string>(FieldNameBox.Text);
+                    _currentClassBuilder.AddField<string>(FieldNameBox.Text, attr);
                     break;
                 case "int":
-                    _currentClassBuilder.AddField<int>(FieldNameBox.Text);
+                    _currentClassBuilder.AddField<int>(FieldNameBox.Text, attr);
                     break;
                 case "bool":
-                    _currentClassBuilder.AddField<bool>(FieldNameBox.Text);
+                    _currentClassBuilder.AddField<bool>(FieldNameBox.Text, attr);
                     break;
                 default:
                     break;
@@ -86,16 +101,31 @@ namespace CodeGenStudio
 
         private void PropertyAddButton_Click(object sender, EventArgs e)
         {
-            switch (PropertyTypeBox.Text)
+			MemberAttributes attr = MemberAttributes.Private;
+			switch (PropertyAccessBox.Text)
+			{
+				case "public":
+					attr = MemberAttributes.Public;
+					break;
+				case "protected":
+					attr = MemberAttributes.Family;
+					break;
+				case "private":
+					attr = MemberAttributes.Private;
+					break;
+				default:
+					break;
+			}
+			switch (PropertyTypeBox.Text)
             {
                 case "string":
-                    _currentClassBuilder.AddProperty<string>(PropertyNameBox.Text);
+                    _currentClassBuilder.AddProperty<string>(PropertyNameBox.Text, attr);
                     break;
                 case "int":
-                    _currentClassBuilder.AddProperty<int>(PropertyNameBox.Text);
+                    _currentClassBuilder.AddProperty<int>(PropertyNameBox.Text, attr);
                     break;
                 case "bool":
-                    _currentClassBuilder.AddProperty<bool>(PropertyNameBox.Text);
+                    _currentClassBuilder.AddProperty<bool>(PropertyNameBox.Text, attr);
                     break;
                 default:
                     break;
@@ -107,19 +137,34 @@ namespace CodeGenStudio
 
         private void MethodAddButton_Click(object sender, EventArgs e)
         {
-            switch (MethodTypeBox.Text)
+			MemberAttributes attr = MemberAttributes.Public;
+			switch (PropertyAccessBox.Text)
+			{
+				case "public":
+					attr = MemberAttributes.Public;
+					break;
+				case "protected":
+					attr = MemberAttributes.Family;
+					break;
+				case "private":
+					attr = MemberAttributes.Private;
+					break;
+				default:
+					break;
+			}
+			switch (MethodTypeBox.Text)
             {
                 case "string":
-                    _currentClassBuilder.AddMethod<string>(MethodNameBox.Text, new ParameterItem[] { });
+                    _currentClassBuilder.AddMethod<string>(MethodNameBox.Text, new ParameterItem[] { }, attr);
                     break;
                 case "int":
-                    _currentClassBuilder.AddMethod<int>(MethodNameBox.Text, new ParameterItem[] { });
+                    _currentClassBuilder.AddMethod<int>(MethodNameBox.Text, new ParameterItem[] { }, attr);
                     break;
                 case "bool":
-                    _currentClassBuilder.AddMethod<bool>(MethodNameBox.Text, new ParameterItem[] { });
+                    _currentClassBuilder.AddMethod<bool>(MethodNameBox.Text, new ParameterItem[] { }, attr);
                     break;
                 case "void":
-                    _currentClassBuilder.AddVoidMethod(name: MethodNameBox.Text,parameterItems: new ParameterItem[] { });
+                    _currentClassBuilder.AddVoidMethod(name: MethodNameBox.Text,parameterItems: new ParameterItem[] { },attr: attr);
                     break;
                 default:
                     break;
@@ -140,19 +185,32 @@ namespace CodeGenStudio
             PropertyNameBox.Text = "";
             MethodNameBox.Text = "";
             MembersBox.Items.Clear();
-
-
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            saveFileDialog1.FileName = "MyNewClass";
-            saveFileDialog1.Filter = "CSharp(*.cs)|*.cs";
+			var language = GenerateCodeBox.Text;
+			string sExt = "";
+			saveFileDialog1.FileName = "MyNewClass";
+			switch (language)
+			{
+				case "CSharp":
+					break;
+				case "CPP":
+					break;
+				case "VB":
+					break;
+				case "JScript":
+					break;
+				default:
+					break;
+			}
+			saveFileDialog1.Filter = "CSharp(*.cs)|*.cs";
 
             if (saveFileDialog1.ShowDialog() == DialogResult.OK)
             {
                 var path = saveFileDialog1.FileName;
-                _currentCompileUnitBuilder.PublishCode(path);
+                _currentCompileUnitBuilder.PublishCode(path, language);
             }
 
             _currentCompileUnitBuilder = null;

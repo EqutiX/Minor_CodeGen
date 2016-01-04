@@ -110,8 +110,6 @@ namespace UnitTestProject1
         public void IfAddVoidMethodIsCalledTwiceWithTheSameNameAnExceptionShouldBeenThrown()
         {
             var builder = new ClassBuilder(ClassName);
-            
-					
             builder.AddVoidMethod(FunctionName, new ParameterItem[] { }).AddVoidMethod(FunctionName, new ParameterItem[] { }).GetDeclaration();
         }
 
@@ -119,11 +117,9 @@ namespace UnitTestProject1
 		public void IfAddPropertyIsCalledShouldAddPropertyToDeclaration()
 		{
 			var builder = new ClassBuilder(ClassName);
-			
-
 			var target = builder.AddProperty<string>(FirstPropertyName).GetDeclaration();
 
-			Assert.AreEqual(1, target.Members.Count);
+			Assert.AreEqual(2, target.Members.Count);
 			var member = target.Members[0];
 			Assert.AreEqual(FirstPropertyName, member.Name);
 		}
@@ -133,7 +129,6 @@ namespace UnitTestProject1
 		public void IfAddPropertyIsCalledTwiceWithTheSamePropertyNameShouldThrowException()
 		{
 			var builder = new ClassBuilder(ClassName);
-
 			builder.AddProperty<string>(FirstPropertyName).AddProperty<string>(FirstPropertyName).GetDeclaration();
 		}
 

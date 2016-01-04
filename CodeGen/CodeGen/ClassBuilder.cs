@@ -19,17 +19,18 @@ namespace CodeGen
         /// <param name="attr">Attributes the class haves.</param>
         /// <param name="isStatic">The make a class static or not. (DEFAULT IS FALSE)</param>
 		/// <param name="isInterface">The make a class an interface or not. (DEFAULT IS FALSE)</param>
-		public ClassBuilder(string className, TypeAttributes attr = TypeAttributes.Public, bool isStatic = false, bool isInterface = false)
+		public ClassBuilder(string className, TypeAttributes attr = TypeAttributes.Public, bool isStatic = false, string sBaseClass = "")
 		{
 			_currentClass = new CodeTypeDeclaration( );
 		    _currentClass = new CodeTypeDeclaration((isStatic ? "static " : "") + className)
 		    {
 		        IsClass = true,
-				
 				TypeAttributes = attr,
-				IsInterface = isInterface
 		    };
-			_currentClass.BaseTypes.Add(new CodeTypeReference("BlaDieBla"));
+			if (!string.IsNullOrWhiteSpace(sBaseClass))
+			{
+				_currentClass.BaseTypes.Add(new CodeTypeReference(sBaseClass));
+			}
 		}
 
 		/// <summary>
@@ -91,6 +92,7 @@ namespace CodeGen
                 Name = fieldName,
                 Type = new CodeTypeReference(typeof (T))
             };
+			
             _currentClass.Members.Add( field );
 		}
 
@@ -138,6 +140,7 @@ namespace CodeGen
 		    var method = CreateCodeMemberMethod(name, attr,new CodeTypeReference(typeof(T)),parameterItems,lines);
 
             var returnStatement = new CodeMethodReturnStatement();
+			
             method.Statements.Add( returnStatement );
 
             _currentClass.Members.Add( method );
@@ -229,7 +232,9 @@ namespace CodeGen
 			property.GetStatements.Add(new CodeMethodReturnStatement(new CodeFieldReferenceExpression(new CodeThisReferenceExpression(), propertyName+"Value")));
 			property.SetStatements.Add(new CodeAssignStatement(new CodeFieldReferenceExpression(new CodeThisReferenceExpression(), propertyName + "Value"), new CodePropertySetValueReferenceExpression()));
 			_currentClass.Members.Add(property);
-		}
+
+			var field = AddField<T>(propertyName + "Value", MemberAttributes.Private);
+        }
 
 		/// <summary>
         /// AddPropertyValue adds a value to an already created property.

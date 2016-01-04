@@ -80,9 +80,18 @@ namespace CodeGen
 		/// Creates a sourcecode file containing all code generated
 		/// </summary>
 		/// <param name="fileName">Name of the sourcefiles</param>
-        public void PublishCode(string fileName)
+        public void PublishCode(string fileName, string sLanguage)
         {
-			var provider = CodeDomProvider.CreateProvider("CSharp");
+			CodeDomProvider provider = null;
+			
+            if (CodeDomProvider.IsDefinedLanguage(sLanguage))
+			{
+				provider = CodeDomProvider.CreateProvider(sLanguage);
+			}
+			else
+			{
+				provider = CodeDomProvider.CreateProvider("CSharp");
+			}
             var options = new CodeGeneratorOptions {BracingStyle = "C"};
             using (var sourceWriter = new StreamWriter(fileName))
             {
