@@ -195,17 +195,23 @@ namespace CodeGenStudio
 			switch (language)
 			{
 				case "CSharp":
-					break;
+					sExt = "CSharp(*.cs|*.cs";
+                    break;
 				case "CPP":
+					sExt = "CPP(*.cpp)|*.cpp";
 					break;
 				case "VB":
+					sExt = "Visual Basic(*.vb)|*.vb";
 					break;
 				case "JScript":
+					sExt = "JScript(*.js)|*.js";
 					break;
 				default:
+					language = "CSharp";
+					sExt = "CSharp(*.cs|*.cs";
 					break;
 			}
-			saveFileDialog1.Filter = "CSharp(*.cs)|*.cs";
+			saveFileDialog1.Filter = sExt;
 
             if (saveFileDialog1.ShowDialog() == DialogResult.OK)
             {

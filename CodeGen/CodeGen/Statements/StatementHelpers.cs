@@ -9,6 +9,8 @@ namespace CodeGen.Statements
 
 		// TODO: some implementations of this function have more then 1 usefull overload.
 		public abstract CodeStatement CreateStatement(IStatementInfo statementInfo);
+
+		//ToDO: return simple model  that can be generated in a non CodeDom Knowning environment. that later can be used to Create the statment in a CodeDom environment
 	}
 
 	public class CommentStatementHelper : BaseStatementHelper
@@ -22,7 +24,7 @@ namespace CodeGen.Statements
 		{
 			var info = statementInfo as CommentStatementInfo;
 			if (info == null) throw new IncorectStatementInfoException();
-			
+
 			return new CodeCommentStatement(info.Text);
 		}
 	}

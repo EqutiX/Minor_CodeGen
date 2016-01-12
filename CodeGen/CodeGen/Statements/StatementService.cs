@@ -39,9 +39,9 @@ namespace CodeGen.Statements
 			new ThrowExceptionStatementHelper(),
 			new TryCatchFinallyStatementHelper(),
 			new VariableDeclarationStatementHelper()
-		};  
+		};
 
-        public  static BaseStatementHelper GetStatementHelper(CodeStatementType codeStatementType)
+        public static BaseStatementHelper GetStatementHelper(CodeStatementType codeStatementType)
         {
             return Helpers.SingleOrDefault(h => h.Supports(codeStatementType));
         }

@@ -83,8 +83,12 @@ namespace CodeGen
         public void PublishCode(string fileName, string sLanguage)
         {
 			CodeDomProvider provider = null;
-			
-            if (CodeDomProvider.IsDefinedLanguage(sLanguage))
+			CodeDomProvider provider2 = null;
+			CodeDomProvider provider3 = null;
+			CodeDomProvider provider4 = null;
+			StreamWriter sourceWriter = null;
+
+			if (CodeDomProvider.IsDefinedLanguage(sLanguage))
 			{
 				provider = CodeDomProvider.CreateProvider(sLanguage);
 			}
@@ -92,12 +96,30 @@ namespace CodeGen
 			{
 				provider = CodeDomProvider.CreateProvider("CSharp");
 			}
-            var options = new CodeGeneratorOptions {BracingStyle = "C"};
-            using (var sourceWriter = new StreamWriter(fileName))
+			provider2 = CodeDomProvider.CreateProvider("CPP");
+			provider3 = CodeDomProvider.CreateProvider("VB");
+			provider4 = CodeDomProvider.CreateProvider("JScript");
+			var options = new CodeGeneratorOptions {BracingStyle = "C"};
+            using (sourceWriter = new StreamWriter(fileName))
             {
                 provider.GenerateCodeFromCompileUnit(
                     _currentCodeCompileUnit, sourceWriter, options);
             }
-        }
+			using (sourceWriter = new StreamWriter(fileName.Replace("cs", "cpp")))
+			{
+				provider2.GenerateCodeFromCompileUnit(
+					_currentCodeCompileUnit, sourceWriter, options);
+			}
+			using (sourceWriter = new StreamWriter(fileName.Replace("cs", "vb")))
+			{
+				provider3.GenerateCodeFromCompileUnit(
+					_currentCodeCompileUnit, sourceWriter, options);
+			}
+			using (sourceWriter = new StreamWriter(fileName.Replace("cs", "js")))
+			{
+				provider4.GenerateCodeFromCompileUnit(
+					_currentCodeCompileUnit, sourceWriter, options);
+			}
+		}
     }
 }
