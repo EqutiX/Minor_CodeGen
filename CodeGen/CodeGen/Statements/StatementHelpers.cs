@@ -200,7 +200,6 @@ namespace CodeGen.Statements
 		{
 			var info = statementInfo as ThrowExceptionStatementInfo;
 			if (info == null) throw new IncorectStatementInfoException();
-
 			return new CodeThrowExceptionStatement(info.ToThrowExpression);
 		}
 	}

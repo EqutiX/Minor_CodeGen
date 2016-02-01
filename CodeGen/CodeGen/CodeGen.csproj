@@ -40,10 +40,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Expressions-Beta\IExpressionLine.cs" />
     <Compile Include="Expressions\ExpressionHelpers.cs" />
     <Compile Include="Expressions\ExpressionInfoModels.cs" />
     <Compile Include="Expressions\ExpressionService.cs" />
     <Compile Include="Expressions\ExpressionServiceExceptions.cs" />
+    <Compile Include="Statements-Beta\IStatmentLine.cs" />
     <Compile Include="Statements\StatementHelpers.cs" />
     <Compile Include="ClassBuilder.cs" />
     <Compile Include="ClassBuilderExceptions.cs" />
@@ -56,6 +58,7 @@
     <Compile Include="Statements\StatementService.cs" />
     <Compile Include="Statements\StatementServiceExceptions.cs" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
