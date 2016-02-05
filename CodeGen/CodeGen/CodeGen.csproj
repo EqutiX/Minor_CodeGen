@@ -40,23 +40,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Expressions-Beta\IExpressionLine.cs" />
-    <Compile Include="Expressions\ExpressionHelpers.cs" />
-    <Compile Include="Expressions\ExpressionInfoModels.cs" />
-    <Compile Include="Expressions\ExpressionService.cs" />
-    <Compile Include="Expressions\ExpressionServiceExceptions.cs" />
-    <Compile Include="Statements-Beta\IStatmentLine.cs" />
-    <Compile Include="Statements\StatementHelpers.cs" />
+    <Compile Include="ExpressionLines.cs" />
+    <Compile Include="StatmentLines.cs" />
     <Compile Include="ClassBuilder.cs" />
     <Compile Include="ClassBuilderExceptions.cs" />
     <Compile Include="CompileUnitBuilder.cs" />
     <Compile Include="CompileUntiBuilderExceptions.cs" />
     <Compile Include="InterfaceBuilder.cs" />
-    <Compile Include="Statements\StatementInfoModels.cs" />
     <Compile Include="ParameterItem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Statements\StatementService.cs" />
-    <Compile Include="Statements\StatementServiceExceptions.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
