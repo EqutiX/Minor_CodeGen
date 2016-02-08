@@ -784,8 +784,7 @@ type Namespace = { Namespace : string;
 let generateCode (originalFilePath:string) (program_name:string)
                  (rules:UntypedExpression)
                  (program:UntypedExpression)
-                 (ctxt:ConcreteExpressionContext)
-                 (nameSpace:Namespace) =
+                 (ctxt:ConcreteExpressionContext) =
   
   match rules with
   | Application(Implicit, Keyword(Sequence, _, _) :: rules, pos, _) ->
@@ -823,10 +822,10 @@ let generateCode (originalFilePath:string) (program_name:string)
           match inheritanceRelationships |> Map.tryFind (i) with
           | Some ir ->
             let explicitInterfaces = ir.BaseInterfaces
-            nameSpace.Interfaces.Add( new InterfaceBuilder(i,TypeAttributes.Public))
+            //nameSpace.Interfaces.Add( new InterfaceBuilder(i,TypeAttributes.Public))
             yield sprintf "public interface %s : %s {}\n" i (explicitInterfaces |> Seq.reduce (fun s x -> s + ", " + x))
           | _ ->
-            nameSpace.Interfaces.Add( new InterfaceBuilder(i,TypeAttributes.Public))
+            //nameSpace.Interfaces.Add( new InterfaceBuilder(i,TypeAttributes.Public))
             yield sprintf "public interface %s {}\n" i
       ] |> Seq.fold (+) ""
     let all_method_paths =
@@ -850,13 +849,35 @@ let generateCode (originalFilePath:string) (program_name:string)
 
       match programKeyword.Multeplicity with
       | KeywordMulteplicity.Single ->
+        //TODO
         let cb = new ClassBuilder("EntryPoint", TypeAttributes.Public, false)
-        let pi = new ParameterItem( Name = "s", Type = typeof<string>)
+        let pi = new CodeGen.ParameterItem()
+        pi.Name <- "s"
+        pi.Type = typeof<string> |> ignore
         let pis = [|pi|]
-        cb.AddMethod<string>("Print", pis, CodeDom.MemberAttributes.Public ||| CodeDom.MemberAttributes.Static, null ) |> ignore
+        let inputLine = new Expressions.ParameterDeclarationExpressionLine()
+        inputLine.Name <- "s"
+        inputLine.Type <- "string"
+        let statementLine = new Statements.ExpressionStatementLine()
+        let methodInvoke = new Expressions.MethodInvokeExpressionLine()
+        methodInvoke.MethodName <- "WriteLine"
+        let test = new Expressions.TypeReferenceExpressionLine()
+        test.Type <- "System.Console"
+        methodInvoke.TargetObject <- test
+        let methodInvokeParam = new Expressions.VariableReferenceExpressionLine()
+        methodInvokeParam.VariableName <- pi.Name
+        methodInvoke.Parameters <- [|methodInvokeParam|]
+        statementLine.Expressions.Add(0, inputLine);
+        statementLine.Expressions.Add(1, methodInvoke);
+        let statementLines : IStatementLine[] = [|statementLine|]
         
+        cb.AddMethod<string>("Printe", pis, CodeDom.MemberAttributes.Public ||| CodeDom.MemberAttributes.Static, statementLines ) |> ignore
+        let cub = new CompileUnitBuilder("Bla")
+        let typeDecl = cb.GetDeclaration()
+        cub.AddClass(typeDecl) |> ignore
+        cub.PublishCode("c:\\Users\\Sytse\\Documents\\GitHubVisualStudio\\Minor_CodeGen\\CodeGen\\test.cs", "CSharp")
         
-        nameSpace.Classes.Add( cb )
+        //nameSpace.Classes.Add( cb )
         sprintf "public class EntryPoint {\n public static bool Print(string s) {System.Console.WriteLine(s); return true;}\n   \nstatic public object Run(bool printInput)\n{\n #line 1 \"input\"\n var p = %s;\nif(printInput) System.Console.WriteLine(p.ToString());\n %s\n var result = p.Run(); %s\n\nreturn result;\n}\n}\n" 
                 (createElement ctxt programTyped |> fst) OptionalPrintHead OptionalPrintTail
       | KeywordMulteplicity.Multiple ->

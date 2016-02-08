@@ -311,9 +311,9 @@ namespace CodeGen.Expressions
     {
         public CodeExpression CreateExpression()
         {
-            return new CodeVariableReferenceExpression(VeriableName);
+            return new CodeVariableReferenceExpression(VariableName);
         }
 
-        public string VeriableName { get; set; }
+        public string VariableName { get; set; }
     }
 }

@@ -139,9 +139,9 @@ namespace CodeGen
 			
 		    var method = CreateCodeMemberMethod(name, attr,new CodeTypeReference(typeof(T)),parameterItems,lines);
 
-            var returnStatement = new CodeMethodReturnStatement();
+            //var returnStatement = new CodeMethodReturnStatement();
 			
-            method.Statements.Add( returnStatement );
+            //method.Statements.Add( returnStatement );
 
             _currentClass.Members.Add( method );
 			return this;
@@ -168,7 +168,7 @@ namespace CodeGen
             (parameterItems.ToList()).ForEach(
                 i =>
                     codeMemberMethod.Parameters.Add(new CodeParameterDeclarationExpression(
-                        new CodeTypeReference(i.Type), name)));
+                        new CodeTypeReference(i.Type), i.Name)));
 
             lines?.ToList().ForEach(l => codeMemberMethod.Statements.Add(l.CreateStatement()));
 
