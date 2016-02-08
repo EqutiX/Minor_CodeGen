@@ -853,11 +853,11 @@ let generateCode (originalFilePath:string) (program_name:string)
         let cb = new ClassBuilder("EntryPoint", TypeAttributes.Public, false)
         let pi = new CodeGen.ParameterItem()
         pi.Name <- "s"
-        pi.Type = typeof<string> |> ignore
+        pi.Type <- typeof<string>
         let pis = [|pi|]
-        let inputLine = new Expressions.ParameterDeclarationExpressionLine()
-        inputLine.Name <- "s"
-        inputLine.Type <- "string"
+        //let inputLine = new Expressions.ParameterDeclarationExpressionLine()
+       // inputLine.Name <- "s"
+       // inputLine.Type <- "string"
         let statementLine = new Statements.ExpressionStatementLine()
         let methodInvoke = new Expressions.MethodInvokeExpressionLine()
         methodInvoke.MethodName <- "WriteLine"
@@ -867,9 +867,15 @@ let generateCode (originalFilePath:string) (program_name:string)
         let methodInvokeParam = new Expressions.VariableReferenceExpressionLine()
         methodInvokeParam.VariableName <- pi.Name
         methodInvoke.Parameters <- [|methodInvokeParam|]
-        statementLine.Expressions.Add(0, inputLine);
-        statementLine.Expressions.Add(1, methodInvoke);
-        let statementLines : IStatementLine[] = [|statementLine|]
+
+        let inputStatement = new Statements.ReturnStatementLine()
+        let varRef = new Expressions.VariableReferenceExpressionLine()
+        varRef.VariableName <- "s"
+        
+
+        statementLine.Expressions.Add(0, methodInvoke);
+        inputStatement.Expressions.Add( 0, varRef )
+        let statementLines : IStatementLine[] = [|statementLine;inputStatement|]
         
         cb.AddMethod<string>("Printe", pis, CodeDom.MemberAttributes.Public ||| CodeDom.MemberAttributes.Static, statementLines ) |> ignore
         let cub = new CompileUnitBuilder("Bla")
