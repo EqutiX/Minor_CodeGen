@@ -133,7 +133,7 @@ namespace CodeGen
         /// <param name="attr">Attributes of the method that will be added.</param>
         /// <param name="lines">An Array of strings to define the code-lines of the method.</param>
         /// <returns>The current ClassBuilder (this)</returns>
-        public ClassBuilder AddMethod<T>(string name, ParameterItem[] parameterItems, MemberAttributes attr = MemberAttributes.Public, string[] lines = null)
+        public ClassBuilder AddMethod<T>(string name, ParameterItem[] parameterItems, MemberAttributes attr = MemberAttributes.Public, IStatementLine[] lines = null)
         {
             if (FindMember<CodeMemberMethod>(name) != null) throw new MethodAlreadyExistsException();
 			
@@ -156,7 +156,7 @@ namespace CodeGen
         /// <param name="parameterItems">An Array of Type/Name combinations to define what the parameters are.</param>
         /// <param name="lines">An Array of strings to define the code-lines of the method.</param>
         /// <returns>A new CodeMemberMethod that can be added to CodeTypeDeclaration members.</returns>
-        private static CodeMemberMethod CreateCodeMemberMethod(string name, MemberAttributes attr, CodeTypeReference codeTypeReference, IEnumerable<ParameterItem> parameterItems, IEnumerable<string> lines)
+        private static CodeMemberMethod CreateCodeMemberMethod(string name, MemberAttributes attr, CodeTypeReference codeTypeReference, IEnumerable<ParameterItem> parameterItems, IEnumerable<IStatementLine> lines)
         {
             var codeMemberMethod =  new CodeMemberMethod
             {
@@ -170,7 +170,7 @@ namespace CodeGen
                     codeMemberMethod.Parameters.Add(new CodeParameterDeclarationExpression(
                         new CodeTypeReference(i.Type), name)));
 
-            lines?.ToList().ForEach(i => codeMemberMethod.Statements.Add(new CodeCommentStatement(i)));
+            lines?.ToList().ForEach(l => codeMemberMethod.Statements.Add(l.CreateStatement()));
 
 
             return codeMemberMethod;
@@ -184,7 +184,7 @@ namespace CodeGen
         /// <param name="attr">Attributes of the method that will be added.</param>
         /// <param name="lines">An Array of strings to define the code-lines of the method.</param>
         /// <returns>The current ClassBuilder (this)</returns>
-        public ClassBuilder AddVoidMethod(string name, ParameterItem[] parameterItems, MemberAttributes attr = MemberAttributes.Public, string[] lines = null)
+        public ClassBuilder AddVoidMethod(string name, ParameterItem[] parameterItems, MemberAttributes attr = MemberAttributes.Public, IStatementLine[] lines = null)
         {
             if (FindMember<CodeMemberMethod>(name) != null) throw new MethodAlreadyExistsException();
 
