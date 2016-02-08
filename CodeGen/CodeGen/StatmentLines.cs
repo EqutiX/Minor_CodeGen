@@ -7,7 +7,7 @@ namespace CodeGen
 {
    public interface IStatementLine
     {
-        Dictionary<int,IExpressionLine> Expressions { get; set; }
+        Dictionary<int,IExpressionLine> Expressions { get;}
 
         CodeStatement CreateStatement();
 
@@ -23,7 +23,12 @@ namespace CodeGen.Statements
 
         public string Text { get; set; }
 
-        public Dictionary<int, IExpressionLine> Expressions { get; set; }
+        public Dictionary<int, IExpressionLine> Expressions { get; }
+
+	    public CommentStatementLine()
+	    {
+		    Expressions = new Dictionary<int, IExpressionLine>();
+	    }
 
         public CodeStatement CreateStatement()
         {
@@ -36,29 +41,39 @@ namespace CodeGen.Statements
 
     public class ReturnStatementLine : IStatementLine
     {
-        public Dictionary<int, IExpressionLine> Expressions { get; set; }
+        public Dictionary<int, IExpressionLine> Expressions { get; }
 
         public CodeStatement CreateStatement()
         {
             return new CodeMethodReturnStatement(Expressions[0].CreateExpression());
         }
+
+	    public ReturnStatementLine()
+	    {
+			Expressions = new Dictionary<int, IExpressionLine>();
+		}
     }
 
     public class AssignStatementLine : IStatementLine
     {
-        public Dictionary<int, IExpressionLine> Expressions { get; set; }
+        public Dictionary<int, IExpressionLine> Expressions { get; }
 
         public CodeStatement CreateStatement()
         {
             return new CodeAssignStatement(Expressions[0].CreateExpression(),Expressions[1].CreateExpression());
         }
+
+	    public AssignStatementLine()
+	    {
+			Expressions = new Dictionary<int, IExpressionLine>();
+		}
     }
 
     public class AttachEventStatementLine:IStatementLine
     {
         public string EventName { get; set; }
 
-        public Dictionary<int, IExpressionLine> Expressions { get; set; }
+        public Dictionary<int, IExpressionLine> Expressions { get; }
 
         public CodeStatement CreateStatement()
         {
@@ -67,15 +82,25 @@ namespace CodeGen.Statements
                     new CodeEventReferenceExpression(Expressions[0].CreateExpression(), EventName),
                     Expressions[1].CreateExpression());
         }
+
+	    public AttachEventStatementLine()
+	    {
+			Expressions = new Dictionary<int, IExpressionLine>();
+		}
     }
 
-    public class ConditionStatementLine:IStatementLine
+    public class ConditionStatementLine : IStatementLine
     {
-        public Dictionary<int, IExpressionLine> Expressions { get; set; }
+        public Dictionary<int, IExpressionLine> Expressions { get; }
 
         public IStatementLine[] TrueStatementLines { get; set; }
 
         public IStatementLine[] FalseStatementLines { get; set; }
+
+	    public ConditionStatementLine()
+	    {
+			Expressions = new Dictionary<int, IExpressionLine>();
+		}
 
         public CodeStatement CreateStatement()
         {
@@ -85,21 +110,31 @@ namespace CodeGen.Statements
         }
     }
 
-    public class ExpressionStatementLine: IStatementLine
+    public class ExpressionStatementLine : IStatementLine
     {
-        public Dictionary<int, IExpressionLine> Expressions { get; set; }
+	    public Dictionary<int, IExpressionLine> Expressions { get; }
 
-        public CodeStatement CreateStatement()
+	    public ExpressionStatementLine()
+	    {
+			Expressions = new Dictionary<int, IExpressionLine>();
+		}
+
+	    public CodeStatement CreateStatement()
         {
             return new CodeExpressionStatement(Expressions[0].CreateExpression()); 
         }
     }
 
-    public class GotoStatementLine: IStatementLine
+    public class GotoStatementLine : IStatementLine
     {
         public string Label { get; set; }
 
-        public Dictionary<int, IExpressionLine> Expressions { get; set; }
+        public Dictionary<int, IExpressionLine> Expressions { get; }
+
+	    public GotoStatementLine()
+	    {
+			Expressions = new Dictionary<int, IExpressionLine>();
+		}
 
         public CodeStatement CreateStatement()
         {
@@ -107,13 +142,18 @@ namespace CodeGen.Statements
         }
     }
 
-    public class LabledStatementLine: IStatementLine
+    public class LabledStatementLine : IStatementLine
     {
         public string Label { get; set; }
 
         public IStatementLine StatementLine { get; set; }
 
-        public Dictionary<int, IExpressionLine> Expressions { get; set; }
+        public Dictionary<int, IExpressionLine> Expressions { get; }
+
+	    public LabledStatementLine()
+	    {
+			Expressions = new Dictionary<int, IExpressionLine>();
+		}
 
         public CodeStatement CreateStatement()
         {
@@ -131,7 +171,13 @@ namespace CodeGen.Statements
 
         public IStatementLine[] StatementLines { get; set; }
 
-        public Dictionary<int, IExpressionLine> Expressions { get; set; }
+        public Dictionary<int, IExpressionLine> Expressions { get; }
+
+	    public IterationStatementLine()
+	    {
+			Expressions = new Dictionary<int, IExpressionLine>();
+		}
+
         public CodeStatement CreateStatement()
         {
             return new CodeIterationStatement(Init.CreateStatement(), Expressions[0].CreateExpression(),
@@ -143,7 +189,12 @@ namespace CodeGen.Statements
     {
         public string Value { get; set; }
 
-        public Dictionary<int, IExpressionLine> Expressions { get; set; }
+        public Dictionary<int, IExpressionLine> Expressions { get; }
+
+	    public SnippetStatementLine()
+	    {
+			Expressions = new Dictionary<int, IExpressionLine>();
+		}
 
         public CodeStatement CreateStatement()
         {
@@ -155,7 +206,12 @@ namespace CodeGen.Statements
     {
         public string  EventName { get; set; }
 
-        public Dictionary<int, IExpressionLine> Expressions { get; set; }
+        public Dictionary<int, IExpressionLine> Expressions { get; }
+
+	    public RemoveEventStatementLine()
+	    {
+			Expressions = new Dictionary<int, IExpressionLine>();
+		}
 
         public CodeStatement CreateStatement()
         {
@@ -166,7 +222,13 @@ namespace CodeGen.Statements
 
     public class ThrowExceptionStatementLine: IStatementLine
     {
-        public Dictionary<int, IExpressionLine> Expressions { get; set; }
+        public Dictionary<int, IExpressionLine> Expressions { get; }
+
+	    public ThrowExceptionStatementLine()
+	    {
+			Expressions = new Dictionary<int, IExpressionLine>();
+		}
+
         public CodeStatement CreateStatement()
         {
             return new CodeThrowExceptionStatement(Expressions[0].CreateExpression());
@@ -186,7 +248,13 @@ namespace CodeGen.Statements
         public IStatementLine[] Catch { get; set; }
 
         public IStatementLine[] Finally { get; set; }
-        public Dictionary<int, IExpressionLine> Expressions { get; set; }
+        public Dictionary<int, IExpressionLine> Expressions { get; }
+
+	    public TryCatchFinallyStatementLine()
+	    {
+			Expressions = new Dictionary<int, IExpressionLine>();
+		}
+
         public CodeStatement CreateStatement()
         {
             CodeCatchClause codeCatchClause;
@@ -214,7 +282,12 @@ namespace CodeGen.Statements
 
         public string Name { get; set; }
 
-        public Dictionary<int, IExpressionLine> Expressions { get; set; }
+        public Dictionary<int, IExpressionLine> Expressions { get; }
+
+	    public VariableDeclarationStatementLine()
+	    {
+			Expressions = new Dictionary<int, IExpressionLine>();
+		}
 
         public CodeStatement CreateStatement()
         {
