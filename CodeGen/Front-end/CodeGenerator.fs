@@ -867,18 +867,55 @@ let generateCode (originalFilePath:string) (program_name:string)
                               TargetObject = new Expressions.TypeReferenceExpressionLine( Type = "System.Console" ), 
                               Parameters = [|new Expressions.VariableReferenceExpressionLine( VariableName = "s" )|] ) )
 
+        //static public object Run(bool printInput)
         let parameterItems2 = [|new ParameterItem( Name = "printInput", Type = typeof<bool>)|]
-        let returnStatement2 = new Statements.ReturnStatementLine()
-        returnStatement2.Expressions.Add( 0, new Expressions.VariableReferenceExpressionLine( VariableName = "result") )
-
+        
+        // TODO: This needs to have more info of the FUNCTION createElement
+        // var p = %s; (classname.function)
         let statementLine2 = new Statements.VariableDeclarationStatementLine( Name = "p", Type = typeof<System.Object> )
         statementLine2.Expressions.Add( 0, new Expressions.ObjectCreateExpressionLine( CreateType = createElement.GetType().ToString(), Parameters = [||]) )
 
-        //\n #line 1 \"input\"\n var p = %s;\nif(printInput) System.Console.WriteLine(p.ToString());\n %s\n var result = p.Run(); %s\n\nreturn result;\n}\n}
+        // if(printInput) System.Console.WriteLine(p.ToString());
+        let statementLine3 = new Statements.ConditionStatementLine()
+        statementLine3.Expressions.Add(0, new Expressions.VariableReferenceExpressionLine( VariableName = "printInput" ) )
+        let trueStatement = new Statements.ExpressionStatementLine()
+        trueStatement.Expressions.Add(0, new Expressions.MethodInvokeExpressionLine
+                            ( MethodName = "WriteLine",
+                              TargetObject = new Expressions.TypeReferenceExpressionLine( Type = "System.Console" ),
+                              Parameters = [|new Expressions.VariableReferenceExpressionLine( VariableName = "p" )|] ) )
+        statementLine3.TrueStatementLines <- [|trueStatement|]
+
+        // Create object result = p.Run();
+        let statementLine4 = new Statements.VariableDeclarationStatementLine( Name = "result", Type = typeof<System.Object> )
+        statementLine4.Expressions.Add( 0, new Expressions.MethodInvokeExpressionLine
+                            ( MethodName = "Run", 
+                              TargetObject = new Expressions. VariableReferenceExpressionLine( VariableName = "p" ),
+                              Parameters = [|new Expressions.VariableReferenceExpressionLine()|] ) )
+
+        // TODO: %s
+
+        let statementLine5 = new Statements.IterationStatementLine()
+        statementLine5.Init <- null
+
+        //statementLine5.Init = new Statement
+        //statementLine5.Increment = new Statement
+        //statementLine5.StatementLines = new Statement[]
+        //foreach(var x in p.Run())\nyield return x;\n}
+        (*
+        IEnumerator e = dt.Rows.GetEnumerator();
+        while(e.MoveNext())
+        {
+            DataRow row = (DataRow)e.Current;
+            myList.Add(ConvertToObject(row));
+        }*)
+        
+        let returnStatement2 = new Statements.ReturnStatementLine()
+        returnStatement2.Expressions.Add( 0, new Expressions.VariableReferenceExpressionLine( VariableName = "result") )
 
         // Add the complete method to the class
         cb.AddMethod<bool>("Print", parameterItems, CodeDom.MemberAttributes.Public ||| CodeDom.MemberAttributes.Static, [|statementLine;returnStatement|] ) |> ignore
-        cb.AddMethod<System.Object>("Run", parameterItems, CodeDom.MemberAttributes.Public ||| CodeDom.MemberAttributes.Static, [|statementLine2;returnStatement2|] ) |> ignore
+        cb.AddMethod<System.Object>("Run", parameterItems, CodeDom.MemberAttributes.Public ||| CodeDom.MemberAttributes.Static, [|statementLine2;statementLine3;statementLine4;returnStatement2|] ) |> ignore
+        //cb.AddMethod<System.Collections.Generic.IEnumerable<System.Object>>("Printe", parameterItems, CodeDom.MemberAttributes.Public ||| CodeDom.MemberAttributes.Static, [|statementLine;returnStatement|] ) |> ignore
 
         let cub = new CompileUnitBuilder("Bla")
         let typeDecl = cb.GetDeclaration()
@@ -889,6 +926,28 @@ let generateCode (originalFilePath:string) (program_name:string)
         sprintf "public class EntryPoint {\n public static bool Print(string s) {System.Console.WriteLine(s); return true;}\n   \nstatic public object Run(bool printInput)\n{\n #line 1 \"input\"\n var p = %s;\nif(printInput) System.Console.WriteLine(p.ToString());\n %s\n var result = p.Run(); %s\n\nreturn result;\n}\n}\n" 
                 (createElement ctxt programTyped |> fst) OptionalPrintHead OptionalPrintTail
       | KeywordMulteplicity.Multiple ->
+
+        // Create the class
+        let cb = new ClassBuilder("EntryPoint", TypeAttributes.Public, false)
+        
+        // Create the input parameter of the function
+        let parameterItems = [|new ParameterItem( Name = "s", Type = typeof<string>)|]
+        
+        // Create the return statement
+        let returnStatement = new Statements.ReturnStatementLine()
+        returnStatement.Expressions.Add( 0, new Expressions.PrimitiveExpressionLine( Value = true ) )
+
+        // Create the execute statements (like WriteLine)
+        let statementLine = new Statements.ExpressionStatementLine()
+        statementLine.Expressions.Add( 0, new Expressions.MethodInvokeExpressionLine
+                            ( MethodName = "WriteLine", 
+                              TargetObject = new Expressions.TypeReferenceExpressionLine( Type = "System.Console" ), 
+                              Parameters = [|new Expressions.VariableReferenceExpressionLine( VariableName = "s" )|] ) )
+
+        // Add the complete method to the class
+        cb.AddMethod<bool>("Print", parameterItems, CodeDom.MemberAttributes.Public ||| CodeDom.MemberAttributes.Static, [|statementLine;returnStatement|] ) |> ignore
+        cb.AddMethod<System.Collections.Generic.IEnumerable<System.Object>>("Print", parameterItems, CodeDom.MemberAttributes.Public ||| CodeDom.MemberAttributes.Static, [|statementLine;returnStatement|] ) |> ignore
+
         sprintf "public class EntryPoint {\n public static bool Print(string s) {System.Console.WriteLine(s); return true;}\n   static public IEnumerable<object> Run(bool printInput)\n{\n #line 1 \"input\"\n var p = %s;\nif(printInput) System.Console.WriteLine(p.ToString());\nforeach(var x in p.Run())\nyield return x;\n}\n}\n" 
                 (createElement ctxt programTyped |> fst)
     [

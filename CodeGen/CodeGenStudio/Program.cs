@@ -39,7 +39,6 @@ namespace CodeGenStudio
 			methodInvokeParam.VariableName = "s";
 			methodInvoke.Parameters = new IExpressionLine[] {methodInvokeParam};
 			Statements[1].Expressions.Add(0, new VariableReferenceExpressionLine() { VariableName = "s"});
-
 			Statements[0].Expressions.Add( 0, methodInvoke );
 			cb.AddMethod<string>("Print", new ParameterItem[] { pi }, MemberAttributes.Public | MemberAttributes.Static, Statements);
 

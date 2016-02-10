@@ -104,9 +104,17 @@ namespace CodeGen.Statements
 
         public CodeStatement CreateStatement()
         {
-            var trueStatements = TrueStatementLines.Select(e => e.CreateStatement()).ToArray();
-            var falseStatements = FalseStatementLines.Select(e => e.CreateStatement()).ToArray();
-           return new CodeConditionStatement(Expressions[0].CreateExpression(), trueStatements, falseStatements);
+	        if (FalseStatementLines != null)
+	        {
+		        var trueStatements = TrueStatementLines.Select(e => e.CreateStatement()).ToArray();
+		        var falseStatements = FalseStatementLines.Select(e => e.CreateStatement()).ToArray();
+		        return new CodeConditionStatement(Expressions[0].CreateExpression(), trueStatements, falseStatements);
+	        }
+	        else
+	        {
+				var trueStatements = TrueStatementLines.Select( e => e.CreateStatement() ).ToArray();
+				return new CodeConditionStatement( Expressions[0].CreateExpression(), trueStatements );
+			}
         }
     }
 
