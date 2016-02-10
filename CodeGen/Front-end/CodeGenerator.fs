@@ -849,35 +849,37 @@ let generateCode (originalFilePath:string) (program_name:string)
 
       match programKeyword.Multeplicity with
       | KeywordMulteplicity.Single ->
-        //TODO
+        
+        // Create the class
         let cb = new ClassBuilder("EntryPoint", TypeAttributes.Public, false)
-        let pi = new CodeGen.ParameterItem()
-        pi.Name <- "s"
-        pi.Type <- typeof<string>
-        let pis = [|pi|]
-        //let inputLine = new Expressions.ParameterDeclarationExpressionLine()
-       // inputLine.Name <- "s"
-       // inputLine.Type <- "string"
+        
+        // Create the input parameter of the function
+        let parameterItems = [|new ParameterItem( Name = "s", Type = typeof<string>)|]
+        
+        // Create the return statement
+        let returnStatement = new Statements.ReturnStatementLine()
+        returnStatement.Expressions.Add( 0, new Expressions.PrimitiveExpressionLine( Value = true ) )
+
+        // Create the execute statements (like WriteLine)
         let statementLine = new Statements.ExpressionStatementLine()
-        let methodInvoke = new Expressions.MethodInvokeExpressionLine()
-        methodInvoke.MethodName <- "WriteLine"
-        let test = new Expressions.TypeReferenceExpressionLine()
-        test.Type <- "System.Console"
-        methodInvoke.TargetObject <- test
-        let methodInvokeParam = new Expressions.VariableReferenceExpressionLine()
-        methodInvokeParam.VariableName <- pi.Name
-        methodInvoke.Parameters <- [|methodInvokeParam|]
+        statementLine.Expressions.Add( 0, new Expressions.MethodInvokeExpressionLine
+                            ( MethodName = "WriteLine", 
+                              TargetObject = new Expressions.TypeReferenceExpressionLine( Type = "System.Console" ), 
+                              Parameters = [|new Expressions.VariableReferenceExpressionLine( VariableName = "s" )|] ) )
 
-        let inputStatement = new Statements.ReturnStatementLine()
-        let varRef = new Expressions.VariableReferenceExpressionLine()
-        varRef.VariableName <- "s"
-        
+        let parameterItems2 = [|new ParameterItem( Name = "printInput", Type = typeof<bool>)|]
+        let returnStatement2 = new Statements.ReturnStatementLine()
+        returnStatement2.Expressions.Add( 0, new Expressions.VariableReferenceExpressionLine( VariableName = "result") )
 
-        statementLine.Expressions.Add(0, methodInvoke);
-        inputStatement.Expressions.Add( 0, varRef )
-        let statementLines : IStatementLine[] = [|statementLine;inputStatement|]
-        
-        cb.AddMethod<string>("Printe", pis, CodeDom.MemberAttributes.Public ||| CodeDom.MemberAttributes.Static, statementLines ) |> ignore
+        let statementLine2 = new Statements.VariableDeclarationStatementLine( Name = "p", Type = typeof<System.Object> )
+        statementLine2.Expressions.Add( 0, new Expressions.ObjectCreateExpressionLine( CreateType = createElement.GetType().ToString(), Parameters = [||]) )
+
+        //\n #line 1 \"input\"\n var p = %s;\nif(printInput) System.Console.WriteLine(p.ToString());\n %s\n var result = p.Run(); %s\n\nreturn result;\n}\n}
+
+        // Add the complete method to the class
+        cb.AddMethod<bool>("Print", parameterItems, CodeDom.MemberAttributes.Public ||| CodeDom.MemberAttributes.Static, [|statementLine;returnStatement|] ) |> ignore
+        cb.AddMethod<System.Object>("Run", parameterItems, CodeDom.MemberAttributes.Public ||| CodeDom.MemberAttributes.Static, [|statementLine2;returnStatement2|] ) |> ignore
+
         let cub = new CompileUnitBuilder("Bla")
         let typeDecl = cb.GetDeclaration()
         cub.AddClass(typeDecl) |> ignore
