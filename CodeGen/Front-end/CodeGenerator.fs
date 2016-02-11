@@ -920,7 +920,7 @@ let generateCode (originalFilePath:string) (program_name:string)
         let cub = new CompileUnitBuilder("Bla")
         let typeDecl = cb.GetDeclaration()
         cub.AddClass(typeDecl) |> ignore
-        cub.PublishCode("c:\\Users\\Sytse\\Documents\\GitHubVisualStudio\\Minor_CodeGen\\CodeGen\\test.cs", "CSharp")
+        cub.PublishCode("c:\\Users\\Sytse\\Documents\\GitHubVisualStudio\\Minor_CodeGen\\CodeGen\\test.cs")
         
         //nameSpace.Classes.Add( cb )
         sprintf "public class EntryPoint {\n public static bool Print(string s) {System.Console.WriteLine(s); return true;}\n   \nstatic public object Run(bool printInput)\n{\n #line 1 \"input\"\n var p = %s;\nif(printInput) System.Console.WriteLine(p.ToString());\n %s\n var result = p.Run(); %s\n\nreturn result;\n}\n}\n" 
