@@ -45,7 +45,7 @@ namespace CodeGenStudio
 			var cub = new CompileUnitBuilder("Bla");
 			var typeDecl = cb.GetDeclaration();
 			cub.AddClass( typeDecl );
-			cub.PublishCode( "c:\\Users\\Sytse\\Documents\\GitHubVisualStudio\\Minor_CodeGen\\CodeGen\\test.cs", "CSharp" );
+			cub.PublishCode( "c:\\Users\\Sytse\\Documents\\GitHubVisualStudio\\Minor_CodeGen\\CodeGen\\test.cs" );
 
 			Console.WriteLine("Hello");
 			Console.ReadKey();

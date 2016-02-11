@@ -6,7 +6,7 @@ using System.Reflection;
 namespace CodeGen
 {
     /// <summary>
-    // ClassBuilder is a class with simple functions to create a class with .NET CodeDom.
+    /// ClassBuilder is a class with simple functions to create a class with .NET CodeDom.
     /// </summary>
     public class ClassBuilder
 	{
@@ -14,15 +14,15 @@ namespace CodeGen
 		/// _currentClass is the only CodeTypeDeclaration we use in de builder. Its a readonly because it only can be set in the constructor. 
 		/// </summary>
 		private readonly CodeTypeDeclaration _currentClass;
-		
+
 		/// <summary>
-        /// The Construtor initializes _currentClass with the given class name.
+		/// The Construtor initializes _currentClass with the given class name.
 		/// </summary>
-        /// <param name="className">Name you want the class to have.</param>
-        /// <param name="attr">Attributes the class haves.</param>
-        /// <param name="isStatic">The make a class static or not. (DEFAULT IS FALSE)</param>
-		/// <param name="isInterface">The make a class an interface or not. (DEFAULT IS FALSE)</param>
-		public ClassBuilder(string className, TypeAttributes attr = TypeAttributes.Public, bool isStatic = false, string sBaseClass = "")
+		/// <param name="className">Name you want the class to have.</param>
+		/// <param name="attr">Attributes the class has like public, abstract etc..</param>
+		/// <param name="isStatic">This makes a class static or not. (DEFAULT IS FALSE)</param>
+		/// <param name="baseClass">Optional inherered baseclass</param>
+		public ClassBuilder(string className, TypeAttributes attr = TypeAttributes.Public, bool isStatic = false, string baseClass = "")
 		{
 			_currentClass = new CodeTypeDeclaration( );
 		    _currentClass = new CodeTypeDeclaration((isStatic ? "static " : "") + className)
@@ -30,9 +30,9 @@ namespace CodeGen
 		        IsClass = true,
 				TypeAttributes = attr,
 		    };
-			if (!string.IsNullOrWhiteSpace(sBaseClass))
+			if (!string.IsNullOrWhiteSpace(baseClass))
 			{
-				_currentClass.BaseTypes.Add(new CodeTypeReference(sBaseClass));
+				_currentClass.BaseTypes.Add(new CodeTypeReference(baseClass));
 			}
 		}
 
@@ -41,7 +41,7 @@ namespace CodeGen
 		/// </summary>
         /// <param name="parameterItems">An Array of Type/Name combinations to define what the parameters are.</param>
         /// <param name="lines">An Array of strings to define the code-lines of the method.</param>
-        /// <param name="attr">MemberAttributes to define the Attributes of the method.</param>
+        /// <param name="attr">MemberAttributes to define the Attributes of the method. Default is Public.</param>
         /// <returns>The current ClassBuilder (this)</returns>
         public ClassBuilder SetConstructor(ParameterItem[]parameterItems,string[] lines, MemberAttributes attr = MemberAttributes.Public)
         {
@@ -71,7 +71,7 @@ namespace CodeGen
         /// </summary>
         /// <typeparam name="T">Type of field you want to add.</typeparam>
         /// <param name="fieldName">Name of of the field you want to add.</param>
-        /// <param name="attr">Attribute you want the field to have.</param>
+        /// <param name="attr">Attribute you want the field to have. Default is Public.</param>
         /// <returns>The current ClassBuilder (this)</returns>
         public ClassBuilder AddField<T>( string fieldName , MemberAttributes attr = MemberAttributes.Public)
         {
@@ -132,9 +132,9 @@ namespace CodeGen
         /// </summary>
         /// <typeparam name="T">Type of method that will be added.</typeparam>
         /// <param name="name">Name of the method that will be added.</param>
-        /// <param name="parameterItems">An Array of Type/Name combinations to define what the parameters are.</param>
+        /// <param name="parameterItems">An Array of Type/Name combinations to define what the input parameters are.</param>
         /// <param name="attr">Attributes of the method that will be added.</param>
-        /// <param name="lines">An Array of strings to define the code-lines of the method.</param>
+        /// <param name="lines">An Array of IStatementLines to define the code-lines of the method.</param>
         /// <returns>The current ClassBuilder (this)</returns>
         public ClassBuilder AddMethod<T>(string name, ParameterItem[] parameterItems, MemberAttributes attr = MemberAttributes.Public, IStatementLine[] lines = null)
         {
@@ -142,24 +142,20 @@ namespace CodeGen
 			
 		    var method = CreateCodeMemberMethod(name, attr,new CodeTypeReference(typeof(T)),parameterItems,lines);
 
-            //var returnStatement = new CodeMethodReturnStatement();
-			
-            //method.Statements.Add( returnStatement );
-
             _currentClass.Members.Add( method );
 			return this;
 		}
 
-        /// <summary>
-        /// CreateCodeMemberMethod creates a CodeMemberMethod.
-        /// </summary>
-        /// <param name="name">Name of the method that is going to be created.</param>
-        /// <param name="attr">Attributes of the method that is going to be created.</param>
-        /// <param name="codeTypeReference">Return type of the method that is going to be created.</param>
-        /// <param name="parameterItems">An Array of Type/Name combinations to define what the parameters are.</param>
-        /// <param name="lines">An Array of strings to define the code-lines of the method.</param>
-        /// <returns>A new CodeMemberMethod that can be added to CodeTypeDeclaration members.</returns>
-        private static CodeMemberMethod CreateCodeMemberMethod(string name, MemberAttributes attr, CodeTypeReference codeTypeReference, IEnumerable<ParameterItem> parameterItems, IEnumerable<IStatementLine> lines)
+		/// <summary>
+		/// CreateCodeMemberMethod creates a CodeMemberMethod.
+		/// </summary>
+		/// <param name="name">Name of the method that is going to be created.</param>
+		/// <param name="attr">Attributes of the method that is going to be created.</param>
+		/// <param name="codeTypeReference">Return type of the method that is going to be created.</param>
+		/// <param name="parameterItems">An IEnumerable array of Type/Name combinations to define what the parameters are.</param>
+		/// <param name="lines">An IEnumerable array of IStatements to define the code-lines of the method.</param>
+		/// <returns>A new CodeMemberMethod that can be added to CodeTypeDeclaration members.</returns>
+		private static CodeMemberMethod CreateCodeMemberMethod(string name, MemberAttributes attr, CodeTypeReference codeTypeReference, IEnumerable<ParameterItem> parameterItems, IEnumerable<IStatementLine> lines)
         {
             var codeMemberMethod =  new CodeMemberMethod
             {
@@ -182,38 +178,33 @@ namespace CodeGen
         /// <summary>
         /// AddVoidMethod adds a void method to the CodeTypeDeclaration.
         /// </summary>
-        /// <param name="name">Name of the mehtod that will be added.</param>
-        /// <param name="parameterItems">An Array of Type/Name combinations to define what the parameters are.</param>
-        /// <param name="attr">Attributes of the method that will be added.</param>
-        /// <param name="lines">An Array of strings to define the code-lines of the method.</param>
+        /// <param name="name">Name of the method that will be added.</param>
+        /// <param name="parameterItems">An Array of Type/Name combinations to define what the input parameters are.</param>
+        /// <param name="attr">Attributes of the method that will be added. Default is public.</param>
+        /// <param name="lines">An Array of IStatementLines to define the code-lines of the method.</param>
         /// <returns>The current ClassBuilder (this)</returns>
         public ClassBuilder AddVoidMethod(string name, ParameterItem[] parameterItems, MemberAttributes attr = MemberAttributes.Public, IStatementLine[] lines = null)
         {
             if (FindMember<CodeMemberMethod>(name) != null) throw new MethodAlreadyExistsException();
 
             var method = CreateCodeMemberMethod(name, attr, new CodeTypeReference(typeof (void)),parameterItems, lines);
-			var declStatment = new CodeVariableDeclarationStatement(
-				typeof(int), "i", new CodePrimitiveExpression(10));
-			method.Statements.Add(declStatment);
-            
-          
+			
             _currentClass.Members.Add(method);
             return this;
-        }
+		}
 
 		/// <summary>
         /// AddProperty adds a property to the CodeTypeDeclaration.
 		/// </summary>
         /// <typeparam name="T">Type of property that is going to be added.</typeparam>
         /// <param name="propertyName">Name of the property that is going to be added.</param>
-        /// <param name="attr">Attributes of the property that is going to be added.</param>
+        /// <param name="attr">Attributes of the property that is going to be added. Default is Private.</param>
         /// <returns>The current ClassBuilder (this)</returns>
         public ClassBuilder AddProperty<T>(string propertyName, MemberAttributes attr = MemberAttributes.Private)
 		{
             if (FindMember<CodeMemberProperty>(propertyName) != null)
 				throw new PropertyAlreadyExistsException();
-			CreateCodeMemberProperty<T>(propertyName, attr);
-			return this;
+			return CreateCodeMemberProperty<T>(propertyName, attr);
 		}
 		
 		/// <summary>
@@ -222,7 +213,7 @@ namespace CodeGen
         /// <typeparam name="T">Type of the property.</typeparam>
         /// <param name="propertyName">Name of the property.</param>
         /// <param name="attr">Attributes of the property.</param>
-        private void CreateCodeMemberProperty<T>(string propertyName, MemberAttributes attr)
+        private ClassBuilder CreateCodeMemberProperty<T>(string propertyName, MemberAttributes attr)
 		{
 			var property = new CodeMemberProperty
 			{
@@ -236,29 +227,9 @@ namespace CodeGen
 			property.SetStatements.Add(new CodeAssignStatement(new CodeFieldReferenceExpression(new CodeThisReferenceExpression(), propertyName + "Value"), new CodePropertySetValueReferenceExpression()));
 			_currentClass.Members.Add(property);
 
-			var field = AddField<T>(propertyName + "Value", MemberAttributes.Private);
+			return AddField<T>(propertyName + "Value", MemberAttributes.Private);
         }
-
-		/// <summary>
-        /// AddPropertyValue adds a value to an already created property.
-		/// </summary>
-        /// <typeparam name="T">Type of property that is going to be used.</typeparam>
-        /// <param name="propertyName">Name of the property that is going to be used.</param>
-        /// <param name="propertyValue">Value that is going to be set.</param>
-        /// <returns>The current ClassBuilder (this)</returns>
-        public ClassBuilder AddPropertyValue<T>(string propertyName, T propertyValue)
-		{
-            //todo: ???
-			/*var member = FindMember<CodeMemberProperty>(sPropertyName);
-
-			if (member == null)
-				throw new PropertyNotFoundException();
-
-			member.InitExpression = new CodePrimitiveExpression(oPropertyValue);*/
-
-			return this;
-		}
-
+		
 		/// <summary>
 		/// Adds an entrypoint to the current class
 		/// </summary>

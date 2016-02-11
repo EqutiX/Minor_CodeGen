@@ -216,7 +216,7 @@ namespace CodeGenStudio
             if (saveFileDialog1.ShowDialog() == DialogResult.OK)
             {
                 var path = saveFileDialog1.FileName;
-                _currentCompileUnitBuilder.PublishCode(path, language);
+                _currentCompileUnitBuilder.PublishCode(path);
             }
 
             _currentCompileUnitBuilder = null;
