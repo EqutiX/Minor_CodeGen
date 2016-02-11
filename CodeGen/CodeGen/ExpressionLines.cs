@@ -397,12 +397,21 @@ namespace CodeGen.Expressions
             return new CodeParameterDeclarationExpression(Type, Name);
         }
 
-        public string Type { get; set; }
+		/// <summary>
+		/// The type of the parameter to declare.
+		/// </summary>
+		public string Type { get; set; }
 
+		/// <summary>
+		/// The name of the parameter to declare.
+		/// </summary>
         public string Name { get; set; }
     }
 
-    public class PrimitiveExpressionLine : IExpressionLine
+	/// <summary>
+	/// PrimitiveExpressionLine is a class for simply creating a primitive expression. Represent a primitive data type value.
+	/// </summary>
+	public class PrimitiveExpressionLine : IExpressionLine
     {
 
         /// <summary>
@@ -414,10 +423,16 @@ namespace CodeGen.Expressions
             return new CodePrimitiveExpression(Value);
         }
 
+		/// <summary>
+		/// The value of the expression that must be used.
+		/// </summary>
         public object Value { get; set; }
     }
 
-    public class PropertyReferenceExpressionLine : IExpressionLine
+	/// <summary>
+	/// PropertyReferenceExpressionLine is a class for simply creating a property reference expression. Represent a reference to the value of a property.
+	/// </summary>
+	public class PropertyReferenceExpressionLine : IExpressionLine
     {
         /// <summary>
         /// Create a statementLine using the given member data.
@@ -428,12 +443,21 @@ namespace CodeGen.Expressions
             return new CodePropertyReferenceExpression(TargetObject.CreateExpression(), PropertyName);
         }
 
+		/// <summary>
+		/// An expressionline that indicated the object that contains the property to reference.
+		/// </summary>
         public IExpressionLine TargetObject { get; set; }
 
+		/// <summary>
+		/// The name of the property.
+		/// </summary>
         public string PropertyName { get; set; }
     }
 
-    public class PropertySetValueReferenceExpressionLine : IExpressionLine
+	/// <summary>
+	/// PropertySetValueReferenceExpressionLine is a class for simply creating a property set value expression. Used for setting the values of properties.
+	/// </summary>
+	public class PropertySetValueReferenceExpressionLine : IExpressionLine
     {
         /// <summary>
         /// Create a statementLine using the given member data.
@@ -445,7 +469,10 @@ namespace CodeGen.Expressions
         }
     }
 
-    public class SnippetExpressionLine : IExpressionLine
+	/// <summary>
+	/// SnippetExpressionLine is a class for simply creating a snippet expression. Used for creating snippets.
+	/// </summary>
+	public class SnippetExpressionLine : IExpressionLine
     {
         /// <summary>
         /// Create a statementLine using the given member data.
@@ -456,10 +483,16 @@ namespace CodeGen.Expressions
             return new CodeSnippetExpression(Value);
         }
 
+		/// <summary>
+		/// The content of the snippet
+		/// </summary>
         public string Value { get; set; }
     }
 
-    public class ThisReferenceExpressionLine : IExpressionLine
+	/// <summary>
+	/// ThisReferenceExpressionLine is a class for simply creating a this expression. Used for the this keyword.
+	/// </summary>
+	public class ThisReferenceExpressionLine : IExpressionLine
     {
         /// <summary>
         /// Create a statementLine using the given member data.
@@ -471,7 +504,10 @@ namespace CodeGen.Expressions
         }
     }
 
-    public class TypeOfExpressionLine : IExpressionLine
+	/// <summary>
+	/// TypeOfExpressionLine is a class for simply creating a typeof expression. Used for getting the type of an object.
+	/// </summary>
+	public class TypeOfExpressionLine : IExpressionLine
     {
         /// <summary>
         /// Create a statementLine using the given member data.
@@ -482,10 +518,16 @@ namespace CodeGen.Expressions
             return new CodeTypeOfExpression(Type);
         }
 
+		/// <summary>
+		/// The name of the data type for the typeof expression
+		/// </summary>
         public string Type { get; set; }
     }
 
-    public class TypeReferenceExpressionLine : IExpressionLine
+	/// <summary>
+	/// TypeReferenceExpressionLine is a class for simply creating a typed reference expression. Used for accessing members of a reference.
+	/// </summary>
+	public class TypeReferenceExpressionLine : IExpressionLine
     {
         /// <summary>
         /// Create a statementLine using the given member data.
@@ -496,10 +538,16 @@ namespace CodeGen.Expressions
             return new CodeTypeReferenceExpression(Type);
         }
 
+		/// <summary>
+		/// The type of the reference.
+		/// </summary>
         public string Type { get; set; }
     }
 
-    public class VariableReferenceExpressionLine : IExpressionLine
+	/// <summary>
+	/// VariableReferenceExpressionLine is a class for simply creating a variable reference expression. Used for stating already defined variables.
+	/// </summary>
+	public class VariableReferenceExpressionLine : IExpressionLine
     {
         /// <summary>
         /// Create a statementLine using the given member data.
@@ -510,6 +558,9 @@ namespace CodeGen.Expressions
             return new CodeVariableReferenceExpression(VariableName);
         }
 
+		/// <summary>
+		/// The name of the variable that is being referenced by this expression.
+		/// </summary>
         public string VariableName { get; set; }
     }
 }
