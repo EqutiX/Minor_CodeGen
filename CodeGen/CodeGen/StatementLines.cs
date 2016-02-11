@@ -5,32 +5,59 @@ using System.Linq;
 
 namespace CodeGen
 {
+	/// <summary>
+	/// An interface for the statementlines.
+	/// </summary>
    public interface IStatementLine
     {
+		/// <summary>
+		/// A dictionary containing all the Expressions for this StatementLine.
+		/// </summary>
         Dictionary<int,IExpressionLine> Expressions { get;}
 
+		/// <summary>
+		/// Create a statementLine from all the Expressions.
+		/// </summary>
+		/// <returns>Returns the generated CodeStatement.</returns>
         CodeStatement CreateStatement();
-
     }
 }
 
-
 namespace CodeGen.Statements
 {
+	/// <summary>
+	/// A CommentStatementLine is a class for simply creating comment lines.
+	/// </summary>
     public class CommentStatementLine : IStatementLine
     {
+		/// <summary>
+		/// Is the comment line a document line or a regular comment.
+		/// </summary>
         public bool? IsDoc { get; set; }
 
+		/// <summary>
+		/// The content of the comment line.
+		/// </summary>
         public string Text { get; set; }
 
+		/// <summary>
+		/// Implemented from the IStatementLine but not used.
+		/// </summary>
         public Dictionary<int, IExpressionLine> Expressions { get; }
 
+		/// <summary>
+		/// The default contructor for creating a new instance of the CommentStatementLine.
+		/// </summary>
 	    public CommentStatementLine()
 	    {
 		    Expressions = new Dictionary<int, IExpressionLine>();
 	    }
 
-        public CodeStatement CreateStatement()
+		/// <summary>
+		/// Create a statementLine using the given member data.
+		/// </summary>
+		/// <returns>Returns the generated CodeStatement.</returns>
+		public CodeStatement CreateStatement()
         {
             return IsDoc == null
                 ? new CodeCommentStatement(Text)
@@ -39,43 +66,82 @@ namespace CodeGen.Statements
         }
     }
 
-    public class ReturnStatementLine : IStatementLine
+	/// <summary>
+	/// A ReturnStatementLine is a class for simply creating a return line.
+	/// </summary>
+	public class ReturnStatementLine : IStatementLine
     {
+		/// <summary>
+		/// A dictionary storing the expressions used in the return statementline.
+		/// </summary>
         public Dictionary<int, IExpressionLine> Expressions { get; }
 
-        public CodeStatement CreateStatement()
+		/// <summary>
+		/// Create a statementLine using the given member data.
+		/// </summary>
+		/// <returns>Returns the generated CodeStatement.</returns>
+		public CodeStatement CreateStatement()
         {
             return new CodeMethodReturnStatement(Expressions[0].CreateExpression());
         }
 
-	    public ReturnStatementLine()
+		/// <summary>
+		/// The default contructor for creating a new instance of the ReturnStatementLine.
+		/// </summary>
+		public ReturnStatementLine()
 	    {
 			Expressions = new Dictionary<int, IExpressionLine>();
 		}
     }
 
-    public class AssignStatementLine : IStatementLine
+	/// <summary>
+	/// An AssignStatementLine is a class for simply creating a assign line.
+	/// </summary>
+	public class AssignStatementLine : IStatementLine
     {
-        public Dictionary<int, IExpressionLine> Expressions { get; }
+		/// <summary>
+		/// A dictionary storing the expressions used in the assign statementline.
+		/// </summary>
+		public Dictionary<int, IExpressionLine> Expressions { get; }
 
-        public CodeStatement CreateStatement()
+		/// <summary>
+		/// Creates a statementLine using the given member data.
+		/// </summary>
+		/// <returns>Returns the generated CodeStatement.</returns>
+		public CodeStatement CreateStatement()
         {
             return new CodeAssignStatement(Expressions[0].CreateExpression(),Expressions[1].CreateExpression());
         }
 
-	    public AssignStatementLine()
+		/// <summary>
+		/// The default contructor for creating a new instance of the AssignStatementLine.
+		/// </summary>
+		public AssignStatementLine()
 	    {
 			Expressions = new Dictionary<int, IExpressionLine>();
 		}
     }
 
-    public class AttachEventStatementLine:IStatementLine
+	/// <summary>
+	/// An AttachEventStatementLine is a class for simply creating an attach event statement line.
+	/// </summary>
+	public class AttachEventStatementLine : IStatementLine
     {
+		/// <summary>
+		/// Name of the event that must be attached.
+		/// </summary>
         public string EventName { get; set; }
 
-        public Dictionary<int, IExpressionLine> Expressions { get; }
+		/// <summary>
+		/// A dictionary storing the expressions used in the attach event statementline.
+		/// </summary>
+		public Dictionary<int, IExpressionLine> Expressions { get; }
 
-        public CodeStatement CreateStatement()
+		/// <summary>
+		/// Creates a statementLine using the given member data.
+		/// </summary>
+		/// <returns>Returns the generated CodeStatement.</returns>
+		public CodeStatement CreateStatement()
         {
             return
                 new CodeAttachEventStatement(
@@ -83,26 +149,48 @@ namespace CodeGen.Statements
                     Expressions[1].CreateExpression());
         }
 
-	    public AttachEventStatementLine()
+		/// <summary>
+		/// The default contructor for creating a new instance of the AttachEventStatementLine.
+		/// </summary>
+		public AttachEventStatementLine()
 	    {
 			Expressions = new Dictionary<int, IExpressionLine>();
 		}
     }
 
-    public class ConditionStatementLine : IStatementLine
+	/// <summary>
+	/// A ConditionStatementLine is a class for simply creating a condition statement line.
+	/// </summary>
+	public class ConditionStatementLine : IStatementLine
     {
-        public Dictionary<int, IExpressionLine> Expressions { get; }
+		/// <summary>
+		/// A dictionary storing the expressions used in the condition statementline.
+		/// </summary>
+		public Dictionary<int, IExpressionLine> Expressions { get; }
 
+		/// <summary>
+		/// An array of statements that must be executed if the condition turns out to be true.
+		/// </summary>
         public IStatementLine[] TrueStatementLines { get; set; }
 
-        public IStatementLine[] FalseStatementLines { get; set; }
+		/// <summary>
+		/// An array of statements that must be executed if the condition turns out to be false.
+		/// </summary>
+		public IStatementLine[] FalseStatementLines { get; set; }
 
-	    public ConditionStatementLine()
+		/// <summary>
+		/// The default contructor for creating a new instance of the ConditionStatementLine.
+		/// </summary>
+		public ConditionStatementLine()
 	    {
 			Expressions = new Dictionary<int, IExpressionLine>();
 		}
 
-        public CodeStatement CreateStatement()
+		/// <summary>
+		/// Creates a statementLine using the given member data.
+		/// </summary>
+		/// <returns>Returns the generated CodeStatement.</returns>
+		public CodeStatement CreateStatement()
         {
 	        if (FalseStatementLines != null)
 	        {
@@ -118,52 +206,100 @@ namespace CodeGen.Statements
         }
     }
 
-    public class ExpressionStatementLine : IStatementLine
+	/// <summary>
+	/// An ExpressionStatementLine is a class for simply creating an expression statement line.
+	/// </summary>
+	public class ExpressionStatementLine : IStatementLine
     {
-	    public Dictionary<int, IExpressionLine> Expressions { get; }
+		/// <summary>
+		/// A dictionary storing the expressions used in the expression statementline.
+		/// </summary>
+		public Dictionary<int, IExpressionLine> Expressions { get; }
 
-	    public ExpressionStatementLine()
+		/// <summary>
+		/// The default contructor for creating a new instance of the ExpressionStatementLine.
+		/// </summary>
+		public ExpressionStatementLine()
 	    {
 			Expressions = new Dictionary<int, IExpressionLine>();
 		}
 
-	    public CodeStatement CreateStatement()
+		/// <summary>
+		/// Creates a statementLine using the given member data.
+		/// </summary>
+		/// <returns>Returns the generated CodeStatement.</returns>
+		public CodeStatement CreateStatement()
         {
             return new CodeExpressionStatement(Expressions[0].CreateExpression()); 
         }
     }
 
-    public class GotoStatementLine : IStatementLine
+	/// <summary>
+	/// A GotoStatementLine is a class for simply creating a goto statement line.
+	/// </summary>
+	public class GotoStatementLine : IStatementLine
     {
+		/// <summary>
+		/// The name of the label that must be jumped to.
+		/// </summary>
         public string Label { get; set; }
 
-        public Dictionary<int, IExpressionLine> Expressions { get; }
+		/// <summary>
+		/// Implemented from the IStatementLine but not used.
+		/// </summary>
+		public Dictionary<int, IExpressionLine> Expressions { get; }
 
-	    public GotoStatementLine()
+		/// <summary>
+		/// The default contructor for creating a new instance of the GotoStatementLine.
+		/// </summary>
+		public GotoStatementLine()
 	    {
 			Expressions = new Dictionary<int, IExpressionLine>();
 		}
 
-        public CodeStatement CreateStatement()
+		/// <summary>
+		/// Creates a statementLine using the given member data.
+		/// </summary>
+		/// <returns>Returns the generated CodeStatement.</returns>
+		public CodeStatement CreateStatement()
         {
             return new CodeGotoStatement(Label);
         }
     }
 
-    public class LabledStatementLine : IStatementLine
+	/// <summary>
+	/// A LabledStatementLine is a class for simply creating a labled statement line.
+	/// </summary>
+	public class LabledStatementLine : IStatementLine
     {
+		/// <summary>
+		/// Name of the generated label statement.
+		/// </summary>
         public string Label { get; set; }
 
+		/// <summary>
+		/// The statementline that the label contains.
+		/// </summary>
         public IStatementLine StatementLine { get; set; }
 
-        public Dictionary<int, IExpressionLine> Expressions { get; }
+		/// <summary>
+		/// Implemented from the IStatementLine but not used.
+		/// </summary>
+		public Dictionary<int, IExpressionLine> Expressions { get; }
 
-	    public LabledStatementLine()
+		/// <summary>
+		/// The default contructor for creating a new instance of the LabledStatementLine.
+		/// </summary>
+		public LabledStatementLine()
 	    {
 			Expressions = new Dictionary<int, IExpressionLine>();
 		}
 
-        public CodeStatement CreateStatement()
+		/// <summary>
+		/// Creates a statementLine using the given member data.
+		/// </summary>
+		/// <returns>Returns the generated CodeStatement.</returns>
+		public CodeStatement CreateStatement()
         {
             return StatementLine == null
                 ? new CodeLabeledStatement(Label)
@@ -171,99 +307,193 @@ namespace CodeGen.Statements
         }
     }
 
-    public class IterationStatementLine : IStatementLine
+	/// <summary>
+	/// An IterationStatementLine is a class for simply creating an iteration statement line like a for or while loop.
+	/// </summary>
+	public class IterationStatementLine : IStatementLine
     {
+		/// <summary>
+		/// A statement containing the initial value of the iteration.
+		/// </summary>
         public IStatementLine Init { get; set; }
 
+		/// <summary>
+		/// A statement containing the increment that must take place every iteration.
+		/// </summary>
         public IStatementLine Increment { get; set; }
 
+		/// <summary>
+		/// The statementlines that must be executed every iteration.
+		/// </summary>
         public IStatementLine[] StatementLines { get; set; }
 
-        public Dictionary<int, IExpressionLine> Expressions { get; }
+		/// <summary>
+		/// A dictionary storing the expressions used in the return statementline.
+		/// </summary>
+		public Dictionary<int, IExpressionLine> Expressions { get; }
 
-	    public IterationStatementLine()
+		/// <summary>
+		/// The default contructor for creating a new instance of the IterationStatementLine.
+		/// </summary>
+		public IterationStatementLine()
 	    {
 			Expressions = new Dictionary<int, IExpressionLine>();
 		}
 
-        public CodeStatement CreateStatement()
+		/// <summary>
+		/// Creates a statementLine using the given member data.
+		/// </summary>
+		/// <returns>Returns the generated CodeStatement.</returns>
+		public CodeStatement CreateStatement()
         {
             return new CodeIterationStatement(Init.CreateStatement(), Expressions[0].CreateExpression(),
                 Increment.CreateStatement(), StatementLines.Select(s => s.CreateStatement()).ToArray());
         }
     }
 
-    public class SnippetStatementLine : IStatementLine
+	/// <summary>
+	/// A SnippetStatementLine is a class for simply creating a snippet statement line.
+	/// </summary>
+	public class SnippetStatementLine : IStatementLine
     {
+		/// <summary>
+		/// The values of the snippet statement.
+		/// </summary>
         public string Value { get; set; }
 
-        public Dictionary<int, IExpressionLine> Expressions { get; }
+		/// <summary>
+		/// Implemented from the IStatementLine but not used.
+		/// </summary>
+		public Dictionary<int, IExpressionLine> Expressions { get; }
 
-	    public SnippetStatementLine()
+		/// <summary>
+		/// The default contructor for creating a new instance of the SnippetStatementLine.
+		/// </summary>
+		public SnippetStatementLine()
 	    {
 			Expressions = new Dictionary<int, IExpressionLine>();
 		}
 
-        public CodeStatement CreateStatement()
+		/// <summary>
+		/// Creates a statementLine using the given member data.
+		/// </summary>
+		/// <returns>Returns the generated CodeStatement.</returns>
+		public CodeStatement CreateStatement()
         {
             return new CodeSnippetStatement(Value);
         }
     }
 
-    public class RemoveEventStatementLine: IStatementLine
+	/// <summary>
+	/// A RemoveEventStatementLine is a class for simply creating a remove event statement line.
+	/// </summary>
+	public class RemoveEventStatementLine: IStatementLine
     {
-        public string  EventName { get; set; }
+		/// <summary>
+		/// The name of the event that must be removed.
+		/// </summary>
+        public string EventName { get; set; }
 
-        public Dictionary<int, IExpressionLine> Expressions { get; }
+		/// <summary>
+		/// A dictionary storing the expressions used in the return statementline.
+		/// </summary>
+		public Dictionary<int, IExpressionLine> Expressions { get; }
 
-	    public RemoveEventStatementLine()
+		/// <summary>
+		/// The default contructor for creating a new instance of the RemoveEventStatementLine.
+		/// </summary>
+		public RemoveEventStatementLine()
 	    {
 			Expressions = new Dictionary<int, IExpressionLine>();
 		}
 
-        public CodeStatement CreateStatement()
+		/// <summary>
+		/// Creates a statementLine using the given member data.
+		/// </summary>
+		/// <returns>Returns the generated CodeStatement.</returns>
+		public CodeStatement CreateStatement()
         {
             return new CodeRemoveEventStatement(new CodeEventReferenceExpression(Expressions[0].CreateExpression(), EventName),
                     Expressions[1].CreateExpression());
         }
     }
 
-    public class ThrowExceptionStatementLine: IStatementLine
+	/// <summary>
+	/// A ThrowExceptionStatementLine is a class for simply creating a throw exception statement line.
+	/// </summary>
+	public class ThrowExceptionStatementLine: IStatementLine
     {
-        public Dictionary<int, IExpressionLine> Expressions { get; }
+		/// <summary>
+		/// A dictionary storing the expressions used in the return statementline.
+		/// </summary>
+		public Dictionary<int, IExpressionLine> Expressions { get; }
 
-	    public ThrowExceptionStatementLine()
+		/// <summary>
+		/// The default contructor for creating a new instance of the ThrowExceptionStatementLine.
+		/// </summary>
+		public ThrowExceptionStatementLine()
 	    {
 			Expressions = new Dictionary<int, IExpressionLine>();
 		}
 
-        public CodeStatement CreateStatement()
+		/// <summary>
+		/// Creates a statementLine using the given member data.
+		/// </summary>
+		/// <returns>Returns the generated CodeStatement.</returns>
+		public CodeStatement CreateStatement()
         {
             return new CodeThrowExceptionStatement(Expressions[0].CreateExpression());
         }
     }
 
-    public class TryCatchFinallyStatementLine: IStatementLine
+	/// <summary>
+	/// A TryCatchFinallyStatementLine is a class for simply creating a try catch statement line.
+	/// </summary>
+	public class TryCatchFinallyStatementLine: IStatementLine
     {
-
+		/// <summary>
+		/// An array of statementlines that is part of the try part of this statement.
+		/// </summary>
         public IStatementLine[] Try { get; set; }
-
-
+		
+		/// <summary>
+		/// Name of the variable used in the catch block.
+		/// </summary>
         public string LocalName { get; set; }
 
+		/// <summary>
+		/// Type of variable used in the catch block.
+		/// </summary>
         public Type Type { get; set; }
 
-        public IStatementLine[] Catch { get; set; }
+		/// <summary>
+		/// An array of statementlines that is part of the catch part of this statement.
+		/// </summary>
+		public IStatementLine[] Catch { get; set; }
 
-        public IStatementLine[] Finally { get; set; }
-        public Dictionary<int, IExpressionLine> Expressions { get; }
+		/// <summary>
+		/// An array of statementlines that is part of the finally part of this statement.
+		/// </summary>
+		public IStatementLine[] Finally { get; set; }
 
-	    public TryCatchFinallyStatementLine()
+		/// <summary>
+		/// Implemented from the IStatementLine but not used.
+		/// </summary>
+		public Dictionary<int, IExpressionLine> Expressions { get; }
+
+		/// <summary>
+		/// The default contructor for creating a new instance of the TryCatchFinallyStatementLine.
+		/// </summary>
+		public TryCatchFinallyStatementLine()
 	    {
 			Expressions = new Dictionary<int, IExpressionLine>();
 		}
 
-        public CodeStatement CreateStatement()
+		/// <summary>
+		/// Creates a statementLine using the given member data.
+		/// </summary>
+		/// <returns>Returns the generated CodeStatement.</returns>
+		public CodeStatement CreateStatement()
         {
             CodeCatchClause codeCatchClause;
 
@@ -284,20 +514,39 @@ namespace CodeGen.Statements
         }
     }
 
-    public class VariableDeclarationStatementLine: IStatementLine
+	/// <summary>
+	/// A VariableDeclarationStatementLine is a class for simply creating a variable declaration statement line.
+	/// </summary>
+	public class VariableDeclarationStatementLine: IStatementLine
     {
+		/// <summary>
+		/// Type of the variable that is being declared.
+		/// </summary>
         public Type Type { get; set; }
 
+		/// <summary>
+		/// Name of the variable that is being declared.
+		/// </summary>
         public string Name { get; set; }
 
-        public Dictionary<int, IExpressionLine> Expressions { get; }
+		/// <summary>
+		/// A dictionary storing the expressions used in the return statementline.
+		/// </summary>
+		public Dictionary<int, IExpressionLine> Expressions { get; }
 
-	    public VariableDeclarationStatementLine()
+		/// <summary>
+		/// The default contructor for creating a new instance of the VariableDeclarationStatementLine.
+		/// </summary>
+		public VariableDeclarationStatementLine()
 	    {
 			Expressions = new Dictionary<int, IExpressionLine>();
 		}
 
-        public CodeStatement CreateStatement()
+		/// <summary>
+		/// Creates a statementLine using the given member data.
+		/// </summary>
+		/// <returns>Returns the generated CodeStatement.</returns>
+		public CodeStatement CreateStatement()
         {
             return Expressions == null
                 ? new CodeVariableDeclarationStatement(Type, Name)
