@@ -11,6 +11,9 @@ using CodeGen.Statements;
 
 namespace CodeGenStudio
 {
+	/// <summary>
+	/// A test studio to test some of the CodeGen Framework.
+	/// </summary>
 	static class Program
 	{
 		/// <summary>
@@ -47,11 +50,9 @@ namespace CodeGenStudio
 			cub.AddClass( typeDecl );
 			cub.PublishCode( "c:\\Users\\Sytse\\Documents\\GitHubVisualStudio\\Minor_CodeGen\\CodeGen\\test.cs" );
 
-			Console.WriteLine("Hello");
-			Console.ReadKey();
-			//Application.EnableVisualStyles();
-			//Application.SetCompatibleTextRenderingDefault(false);
-			//Application.Run(new CodeGenStudio());
+			Application.EnableVisualStyles();
+			Application.SetCompatibleTextRenderingDefault(false);
+			Application.Run(new CodeGenStudio());
 		}
 	}
 }
