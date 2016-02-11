@@ -5,6 +5,9 @@ using System.Reflection;
 
 namespace CodeGen
 {
+    /// <summary>
+    // ClassBuilder is a class with simple functions to create a class with .NET CodeDom.
+    /// </summary>
     public class ClassBuilder
 	{
 		/// <summary>

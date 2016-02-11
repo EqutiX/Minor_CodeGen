@@ -8,6 +8,9 @@ using System.Reflection;
 
 namespace CodeGen
 {
+    /// <summary>
+    /// InterFaceBuilder is a Class to simply create an Interface for .NET CodeDom.
+    /// </summary>
 	public class InterfaceBuilder
 	{
 		/// <summary>

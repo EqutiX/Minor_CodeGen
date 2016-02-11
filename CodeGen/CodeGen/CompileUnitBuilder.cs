@@ -1,10 +1,12 @@
 ﻿using System.CodeDom;
 using System.CodeDom.Compiler;
-using System.Diagnostics;
 using System.IO;
 
 namespace CodeGen
 {
+    /// <summary>
+    /// CompileUnitBuilder is class to Create a unit that can be compiled.
+    /// </summary>
     public class CompileUnitBuilder
     {
         /// <summary>
@@ -76,29 +78,18 @@ namespace CodeGen
             return this;
         }
 
-		/// <summary>
-		/// Creates a sourcecode file containing all code generated
-		/// </summary>
-		/// <param name="fileName">Name of the sourcefiles</param>
-        public void PublishCode(string fileName, string sLanguage)
+        /// <summary>
+        /// Creates a sourcecode file containing all code generated
+        /// </summary>
+        /// <param name="fileName">Name of the sourcefiles</param>
+        public void PublishCode(string fileName)
         {
-			CodeDomProvider provider = null;
-			CodeDomProvider provider2 = null;
-			CodeDomProvider provider3 = null;
-			CodeDomProvider provider4 = null;
-			StreamWriter sourceWriter = null;
+		    StreamWriter sourceWriter;
 
-			if (CodeDomProvider.IsDefinedLanguage(sLanguage))
-			{
-				provider = CodeDomProvider.CreateProvider(sLanguage);
-			}
-			else
-			{
-				provider = CodeDomProvider.CreateProvider("CSharp");
-			}
-			provider2 = CodeDomProvider.CreateProvider("CPP");
-			provider3 = CodeDomProvider.CreateProvider("VB");
-			provider4 = CodeDomProvider.CreateProvider("JScript");
+		    var provider = CodeDomProvider.CreateProvider("CSharp");
+		    var provider2 = CodeDomProvider.CreateProvider("CPP");
+			var provider3 = CodeDomProvider.CreateProvider("VB");
+			var provider4 = CodeDomProvider.CreateProvider("JScript");
 			var options = new CodeGeneratorOptions {BracingStyle = "C"};
             using (sourceWriter = new StreamWriter(fileName))
             {
