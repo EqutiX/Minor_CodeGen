@@ -281,6 +281,9 @@ namespace CodeGen.Expressions
         public IExpressionLine Expression { get; set; }
     }
 
+    /// <summary>
+    /// EventReferenceExpressionLine is a class for simply creating a Event Reference  Expression.
+    /// </summary>
     public class EventReferenceExpressionLine : IExpressionLine
     {
         /// <summary>
@@ -292,11 +295,21 @@ namespace CodeGen.Expressions
             return new CodeEventReferenceExpression(TargetObject.CreateExpression(), EventName);
         }
 
+        /// <summary>
+        /// IExpressionLine that indicates the object that contains the event.
+        /// </summary>
         public IExpressionLine TargetObject { get; set; }
 
+
+        /// <summary>
+        /// Name of the event to reference.
+        /// </summary>
         public string EventName { get; set; }
     }
 
+    /// <summary>
+    /// FieldReferenceExpressionLine is a class for simply creating a Field Reference  Expression.
+    /// </summary>
     public class FieldReferenceExpressionLine : IExpressionLine
     {
         /// <summary>
@@ -308,11 +321,21 @@ namespace CodeGen.Expressions
             return new CodeFieldReferenceExpression(TargetObject.CreateExpression(), FieldName);
         }
 
+        /// <summary>
+        /// IExpressionLine that indicates the object that contains the Field.
+        /// </summary>
         public IExpressionLine TargetObject { get; set; }
 
+        /// <summary>
+        /// Name of the field to reference
+        /// </summary>
         public string FieldName { get; set; }
     }
 
+
+    /// <summary>
+    /// IndexerExpressionLine is a class for simply creating a Indexer Expression.
+    /// </summary>
     public class IndexerExpressionLine : IExpressionLine
     {
         /// <summary>
@@ -325,11 +348,20 @@ namespace CodeGen.Expressions
                 Indices.Select(i => i.CreateExpression()).ToArray());
         }
 
+        /// <summary>
+        /// The indexes of the indexer expression.
+        /// </summary>
         public IExpressionLine[] Indices { get; set; }
 
+        /// <summary>
+        /// The target object
+        /// </summary>
         public IExpressionLine TargetObject { get; set; }
     }
 
+    /// <summary>
+    /// MethodInvokeExpressionLine is a class for simply creating a Method invoke Expression.
+    /// </summary>
     public class MethodInvokeExpressionLine : IExpressionLine
     {
         /// <summary>
@@ -343,13 +375,26 @@ namespace CodeGen.Expressions
                 Parameters.Select(p => p.CreateExpression()).ToArray());
         }
 
+        /// <summary>
+        /// Array of parameters to call the method with.
+        /// </summary>
         public IExpressionLine[] Parameters { get; set; }
 
+        /// <summary>
+        /// Name of the method to invoke.
+        /// </summary>
         public string MethodName { get; set; }
 
+        /// <summary>
+        /// Indicates the target object with the method to invoke.
+        /// </summary>
         public IExpressionLine TargetObject { get; set; }
     }
 
+
+    /// <summary>
+    /// MethodReferenceExpressionLine is a class for simply creating a Method reference Expression.
+    /// </summary>
     public class MethodReferenceExpressionLine : IExpressionLine
     {
         /// <summary>
@@ -363,13 +408,25 @@ namespace CodeGen.Expressions
             return new CodeMethodReferenceExpression(TargetObject.CreateExpression(), MethodName, typeParameters);
         }
 
+        /// <summary>
+        /// Name of the Method to call.
+        /// </summary>
         public string MethodName { get; set; }
 
+        /// <summary>
+        /// Indicates the object to target.
+        /// </summary>
         public IExpressionLine TargetObject { get; set; }
 
+        /// <summary>
+        /// Array of types that specifies TypeArguments for this Method reference.
+        /// </summary>
         public Type[] Types { get; set; }
     }
 
+    /// <summary>
+    /// ObjectCreateExpressionLine is a class for simply creating a Object create Expression.
+    /// </summary>
     public class ObjectCreateExpressionLine : IExpressionLine
     {
         /// <summary>
@@ -381,11 +438,20 @@ namespace CodeGen.Expressions
             return new CodeObjectCreateExpression(CreateType, Parameters.Select(p => p.CreateExpression()).ToArray());
         }
 
+        /// <summary>
+        /// The name of the data type of the object to create.
+        /// </summary>
         public string CreateType { get; set; }
 
+        /// <summary>
+        /// Array that indicates the parameters used to create the object. 
+        /// </summary>
         public IExpressionLine[] Parameters { get; set; }
     }
 
+    /// <summary>
+    /// ParameterDeclarationExpressionLine is a class for simply creating a parameter declaration Expression.
+    /// </summary>
     public class ParameterDeclarationExpressionLine : IExpressionLine
     {
         /// <summary>
