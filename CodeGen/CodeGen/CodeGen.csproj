@@ -53,8 +53,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Code gen framework.chm" />
-    <None Include="Code gen framework.docx" />
+    <None Include="CodeGen framework help.chm" />
+    <None Include="CodeGen framework help.docx" />
+    <None Include="CodeGen framework inleiding.docx" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
