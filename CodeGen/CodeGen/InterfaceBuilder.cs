@@ -71,7 +71,7 @@ namespace CodeGen
 			(parameterItems.ToList()).ForEach(
 				i =>
 					codeMemberMethod.Parameters.Add(new CodeParameterDeclarationExpression(
-						new CodeTypeReference(i.Type), name)));
+						new CodeTypeReference(i.Type),i.Name)));
 
 			return codeMemberMethod;
 		}

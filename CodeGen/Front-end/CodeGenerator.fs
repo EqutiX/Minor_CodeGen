@@ -894,6 +894,11 @@ let generateCode (originalFilePath:string) (program_name:string)
 
         // TODO: %s
 
+        let newInterface = new InterfaceBuilder("TestInterface")
+        newInterface.AddVoidMethod("StartService",[||]).AddProperty<bool>("IsServiceStarted")
+                            .AddMethod<string>("GetResult",[| new ParameterItem( Name = "studentName", Type = typeof<string>)|]) |> ignore
+
+
         let statementLine5 = new Statements.IterationStatementLine()
         statementLine5.Init <- null
 
@@ -920,6 +925,7 @@ let generateCode (originalFilePath:string) (program_name:string)
         let cub = new CompileUnitBuilder("Bla")
         let typeDecl = cb.GetDeclaration()
         cub.AddClass(typeDecl) |> ignore
+        cub.AddInterface(newInterface.GetDeclaration()) |> ignore
         cub.PublishCode("c:\\Users\\Sytse\\Documents\\GitHubVisualStudio\\Minor_CodeGen\\CodeGen\\test.cs")
         
         //nameSpace.Classes.Add( cb )
